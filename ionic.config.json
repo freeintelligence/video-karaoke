@@ -1,0 +1,7 @@
+{
+  "name": "video-karaoke",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
