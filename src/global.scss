@@ -24,3 +24,30 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.bg-08 {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.8;
+    z-index: -9;
+}
+
+.bg-00 {
+    background: transparent !important;
+}
+
+.bg-card-05 { background-color: rgba(0, 0, 0, 0.5); }
+.bg-card-07 { background-color: rgba(0, 0, 0, 0.7); }
+
+.card-title-simple {
+    padding-top: 24px;
+    padding-bottom: 24px;
+
+    ion-card-title {
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+    }
+}

@@ -1,9 +1,36 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-desde home
+
+  <!--<div class="bg-08"></div>-->
+
+  <ion-card class="bg-card-05 card-title-simple" color="dark">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="settings-outline"></ion-icon>
+        BIENVENIDO A LA CONFIGURACIÓN DEL SISTEMA
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card class="bg-card-07 bg-00" color="dark">
+    <ion-card-content style="width: 1024px; margin: 0 auto;">
+      <ion-list>
+        <ion-item-divider color="none">
+          <ion-label>BÚSQUEDA</ion-label>
+        </ion-item-divider>
+
+        <ion-item color="none" button>
+          <ion-label>Habilitar búsqueda por género</ion-label>
+          <ion-toggle slot="end" color="secondary"></ion-toggle>
+        </ion-item>
+        <ion-item color="none" button>
+          <ion-label>Habilitar búsqueda por artista</ion-label>
+          <ion-toggle slot="end" color="secondary"></ion-toggle>
+        </ion-item>
+      </ion-list>
+
+      <ion-button color="primary" style="width: 100%;">Guardar configuración <ion-icon slot="end" name="save"></ion-icon></ion-button>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
