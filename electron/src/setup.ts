@@ -132,10 +132,10 @@ export class ElectronCapacitorApp {
       height: this.mainWindowState.height,
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: true,
+        contextIsolation: false,
         // Use preload to inject the electron varriant overrides for capacitor plugins.
         // preload: join(app.getAppPath(), "node_modules", "@capacitor-community", "electron", "dist", "runtime", "electron-rt.js"),
-        preload: preloadPath,
+        //preload: preloadPath,
       },
     });
     this.mainWindowState.manage(this.MainWindow);

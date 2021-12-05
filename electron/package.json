@@ -26,7 +26,8 @@
     "electron-serve": "~1.1.0",
     "electron-unhandled": "~3.0.2",
     "electron-updater": "~4.3.9",
-    "electron-window-state": "~5.0.3"
+    "electron-window-state": "~5.0.3",
+    "usb-detection": "^4.13.0"
   },
   "devDependencies": {
     "electron": "~13.1.9",

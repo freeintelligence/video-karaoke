@@ -8,6 +8,7 @@ import { app, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 //import { autoUpdater } from 'electron-updater';
+import { mainEvents } from './events';
 
 import {
   ElectronCapacitorApp,
@@ -63,6 +64,9 @@ if (electronIsDev) {
   await myCapacitorApp.init();
   // Check for updates if we are in a packaged app.
   //autoUpdater.checkForUpdatesAndNotify();
+
+  // Events
+  await mainEvents();
 })();
 
 // Handle when all of our windows are close (platforms have their own expectations).
