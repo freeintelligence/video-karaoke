@@ -23,8 +23,6 @@ export class HomePage implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    console.log('event', event.code);
-
     if (event.code === 'KeyW') {
       this.setFocusOnPreviousElement();
     } else if (event.code === 'KeyS') {
