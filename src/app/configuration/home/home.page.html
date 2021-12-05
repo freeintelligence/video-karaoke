@@ -19,17 +19,17 @@
           <ion-label>BÚSQUEDA</ion-label>
         </ion-item-divider>
 
-        <ion-item color="none" button>
+        <ion-item button>
           <ion-label>Habilitar búsqueda por género</ion-label>
-          <ion-toggle slot="end" color="secondary"></ion-toggle>
+          <ion-toggle slot="end"></ion-toggle>
         </ion-item>
-        <ion-item color="none" button>
+        <ion-item button>
           <ion-label>Habilitar búsqueda por artista</ion-label>
-          <ion-toggle slot="end" color="secondary"></ion-toggle>
+          <ion-toggle slot="end"></ion-toggle>
         </ion-item>
-        <ion-item color="none" button *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]" [attr.id]="'el-'+i">
+        <ion-item button *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]" [attr.id]="'el-'+i">
           <ion-label>Opción {{ i }}</ion-label>
-          <ion-toggle slot="end" color="secondary"></ion-toggle>
+          <ion-toggle slot="end"></ion-toggle>
         </ion-item>
       </ion-list>
 
