@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewChecked, AfterViewInit, Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IonButton, IonItem } from '@ionic/angular';
 
 @Component({
@@ -18,7 +18,7 @@ export class HomePage implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.setFocusOnFirstElement();
+    this.setFocusOnNextElement();
   }
 
   @HostListener('document:keypress', ['$event'])
@@ -44,14 +44,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  setFocusOnFirstElement() {
-    this.setFocusOnElement(this.items.get(0));
-  }
-
-  setFocusOnLastElement() {
-    this.setFocusOnElement(this.items.last);
-  }
-
   setFocusOnPreviousElement() {
     let currentId: number, len = this.items.length, current = this.items.find((item, id) => {
       currentId = id;
@@ -59,7 +51,7 @@ export class HomePage implements OnInit {
     });
   
     if (!current) {
-      return this.setFocusOnLastElement();
+      return this.setFocusOnElement(this.items.last);
     }
 
     if (currentId === 0) {
@@ -78,7 +70,7 @@ export class HomePage implements OnInit {
     });
 
     if (!current) {
-      return this.setFocusOnFirstElement();
+      return this.setFocusOnElement(this.items.get(0));
     }
 
     if (currentId + 1 >= len) {
