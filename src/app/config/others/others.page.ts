@@ -2,11 +2,11 @@ import { Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } f
 import { IonButton, IonItem } from '@ionic/angular';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-others',
+  templateUrl: './others.page.html',
+  styleUrls: ['./others.page.scss'],
 })
-export class HomePage implements OnInit {
+export class OthersPage implements OnInit {
 
   @ViewChildren(IonItem) items: QueryList<IonItem>;
   @ViewChild('submitButton') submitButton: IonButton;
