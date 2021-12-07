@@ -10,12 +10,14 @@
 
       <ion-card-content>
         <ion-list>
-          <ion-item button detail="true" *ngFor="let genre of genreList" [color]="genre.id == 1 ? 'warning' : ''">
-            <ion-thumbnail slot="start">
-              <img [src]="genre.image" />
-            </ion-thumbnail>
-            <ion-label>{{ genre.name }}</ion-label>
-          </ion-item>
+          <ion-virtual-scroll [items]="genreList">
+            <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+              <ion-thumbnail slot="start">
+                <img [src]="item.image" />
+              </ion-thumbnail>
+              <ion-label>{{ item.name }}</ion-label>
+            </ion-item>
+          </ion-virtual-scroll>
         </ion-list>
       </ion-card-content>
     </ion-card>
