@@ -8,6 +8,7 @@ ion-list {
 
 .list-items-container {
     display: inline-block;
+    vertical-align: top;
     box-sizing: border-box;
 
     ion-card-content {
@@ -17,6 +18,9 @@ ion-list {
     ion-list {
         ion-item {
             background-color: rgba(0, 0, 0, 0.2);
+            color: #a0a0a0;
+            box-sizing: border-box !important;
+            --color-hover: white;
         }
     }
 }

@@ -10,11 +10,11 @@
 
       <ion-card-content>
         <ion-list>
-          <ion-item button detail="true">
+          <ion-item button detail="true" *ngFor="let genre of genreList" [color]="genre.id == 1 ? 'warning' : ''">
             <ion-thumbnail slot="start">
-              <img src="https://cdn.quonomy.com/3485/conversions/17-sorprendentes-curiosidades-sobre-la-musica-reggae-h-lg.jpg" />
+              <img [src]="genre.image" />
             </ion-thumbnail>
-            <ion-label>Bob Marley</ion-label>
+            <ion-label>{{ genre.name }}</ion-label>
           </ion-item>
         </ion-list>
       </ion-card-content>
