@@ -1,0 +1,34 @@
+ion-content {
+    --background: url('/assets/images/backgrounds/girl-singing.jpg') no-repeat center center / cover;
+}
+  
+ion-list {
+    --ion-item-background: transparent;
+}
+
+.list-items-container {
+    display: inline-block;
+    box-sizing: border-box;
+
+    ion-card-content {
+        padding: 0 !important;
+    }
+
+    ion-list {
+        ion-item {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    }
+}
+
+.genre-list {
+    width: 20%;
+}
+
+.artist-list {
+    width: 20%;
+}
+
+.songs-list {
+    width: 60%;
+}
