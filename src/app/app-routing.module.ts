@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'configuration', pathMatch: 'full' },
-  { path: 'configuration', loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule) },
+  { path: '', redirectTo: 'config', pathMatch: 'full' },
+  { path: 'config', loadChildren: () => import('./config/config.module').then(m => m.ConfigModule) },
 ];
 
 @NgModule({
