@@ -21,7 +21,7 @@ export class OthersPage implements OnInit {
     this.setFocusOnNextElement();
   }
 
-  @HostListener('document:keypress', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.code === 'KeyW') {
       this.setFocusOnPreviousElement();
