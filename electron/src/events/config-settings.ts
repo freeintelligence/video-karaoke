@@ -14,9 +14,6 @@ export class ConfigSettings {
   async isConfigSetted() {
     ipcMain.on('is-config-setted', async (event) => {
       const config = (await Config.get()).get();
-
-      console.log('config', config);
-
       event.reply('config-is-setted', config);
     });
   }
