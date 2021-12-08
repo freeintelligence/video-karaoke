@@ -31,6 +31,8 @@ export class ListPage implements OnInit {
       { id: 7, name: 'Inner Circle', image: 'https://www.lifeder.com/wp-content/uploads/2017/03/inner-circle-banda-reggaelifederimagen.jpg' },
       { id: 8, name: 'Jimmy Cliff', image: 'https://www.lifeder.com/wp-content/uploads/2020/02/640px-Jimmy_Cliff_-_Festival_du_Bout_du_Monde_2012_-_022-630x420.jpg' },
       { id: 9, name: 'The Abyssianians', image: 'https://www.lifeder.com/wp-content/uploads/2020/02/640px-The_Abyssinians_LanzamientoRototomReggaeContestLatino10-11_20101015-630x420.jpg' },
+      { id: 10, name: 'Alpha Blondy', image: 'https://www.lifeder.com/wp-content/uploads/2020/02/640px-Alpha_Blondy_2007.07.12_002-628x420.jpg' },
+      { id: 11, name: 'Gregory Isaacs', image: 'https://www.lifeder.com/wp-content/uploads/2020/02/321px-Gregory_Isaacs_SNWMF_2010_1_-_on_stage-2-281x420.jpg' },
     ];
   }
 
