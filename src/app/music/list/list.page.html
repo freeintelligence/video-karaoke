@@ -1,73 +1,75 @@
 <ion-content>
 
-  <div class="list-items-container genre-list">
-    <ion-card class="bg-card-05" color="dark">
-      <ion-card-header>
-        <ion-card-title>
-          Género
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <ion-list>
-          <ion-virtual-scroll [items]="genreList">
-            <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
-              <ion-thumbnail slot="start">
-                <img [src]="item.image" />
-              </ion-thumbnail>
-              <ion-label>{{ item.name }}</ion-label>
-            </ion-item>
-          </ion-virtual-scroll>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-  </div>
+  <div class="box-container">
+    <div class="list-items-container genre-list">
+      <ion-card class="bg-card-05" color="dark">
+        <ion-card-header>
+          <ion-card-title>
+            Género
+          </ion-card-title>
+        </ion-card-header>
   
-  <div class="list-items-container artist-list">
-    <ion-card class="bg-card-05" color="dark">
-      <ion-card-header>
-        <ion-card-title>
-          Artista
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <ion-list>
-          <ion-virtual-scroll [items]="artistList">
-            <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
-              <ion-thumbnail slot="start">
-                <img [src]="item.image" />
-              </ion-thumbnail>
-              <ion-label>{{ item.name }}</ion-label>
-            </ion-item>
-          </ion-virtual-scroll>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-  </div>
+        <ion-card-content>
+          <ion-list>
+            <ion-virtual-scroll [items]="genreList">
+              <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+                <ion-thumbnail slot="start">
+                  <img [src]="item.image" />
+                </ion-thumbnail>
+                <ion-label>{{ item.name }}</ion-label>
+              </ion-item>
+            </ion-virtual-scroll>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    
+    <div class="list-items-container artist-list">
+      <ion-card class="bg-card-05" color="dark">
+        <ion-card-header>
+          <ion-card-title>
+            Artista
+          </ion-card-title>
+        </ion-card-header>
   
-  <div class="list-items-container songs-list">
-    <ion-card class="bg-card-05" color="dark">
-      <ion-card-header>
-        <ion-card-title>
-          Canciones
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <ion-list>
-          <ion-virtual-scroll [items]="songList">
-            <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
-              <ion-icon name="play" slot="start"></ion-icon>
-              <ion-label>
-                <h2>{{ item.name }}</h2>
-                <p>Duración: 02:42 minutos</p>
-              </ion-label>
-            </ion-item>
-          </ion-virtual-scroll>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
+        <ion-card-content>
+          <ion-list>
+            <ion-virtual-scroll [items]="artistList">
+              <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+                <ion-thumbnail slot="start">
+                  <img [src]="item.image" />
+                </ion-thumbnail>
+                <ion-label>{{ item.name }}</ion-label>
+              </ion-item>
+            </ion-virtual-scroll>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    
+    <div class="list-items-container songs-list">
+      <ion-card class="bg-card-05" color="dark">
+        <ion-card-header>
+          <ion-card-title>
+            Canciones
+          </ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <ion-list>
+            <ion-virtual-scroll [items]="songList">
+              <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+                <ion-icon name="play" slot="start"></ion-icon>
+                <ion-label>
+                  <h2>{{ item.name }}</h2>
+                  <p>Duración: 02:42 minutos</p>
+                </ion-label>
+              </ion-item>
+            </ion-virtual-scroll>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
 
 </ion-content>
