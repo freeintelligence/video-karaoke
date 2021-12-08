@@ -22,7 +22,31 @@ Config.init({
     genreSearch: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-    }
+    },
+    buttonLeft: {
+        type: DataTypes.CHAR,
+        defaultValue: 'ArrowLeft',
+    },
+    buttonRight: {
+        type: DataTypes.CHAR,
+        defaultValue: 'ArrowRight',
+    },
+    buttonUp: {
+        type: DataTypes.CHAR,
+        defaultValue: 'ArrowUp',
+    },
+    buttonDown: {
+        type: DataTypes.CHAR,
+        defaultValue: 'ArrowDown',
+    },
+    buttonEnter: {
+        type: DataTypes.CHAR,
+        defaultValue: 'Enter',
+    },
+    buttonBack: {
+        type: DataTypes.CHAR,
+        defaultValue: 'Backspace',
+    },
 }, { sequelize: Database, modelName: 'config' });
 
 Config.sync({ alter: true });
