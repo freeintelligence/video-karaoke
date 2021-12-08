@@ -23,6 +23,10 @@ Config.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true,
     },
+    artistSearch: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+    },
     buttonLeft: {
         type: DataTypes.CHAR,
         defaultValue: 'ArrowLeft',

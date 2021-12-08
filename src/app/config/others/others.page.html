@@ -27,10 +27,6 @@
           <ion-label>Habilitar búsqueda por artista</ion-label>
           <ion-toggle slot="end"></ion-toggle>
         </ion-item>
-        <ion-item button *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]" [attr.id]="'el-'+i">
-          <ion-label>Opción {{ i }}</ion-label>
-          <ion-toggle slot="end"></ion-toggle>
-        </ion-item>
       </ion-list>
 
       <ion-button #submitButton color="primary" style="width: 100%;">Guardar configuración <ion-icon slot="end" name="save"></ion-icon></ion-button>
