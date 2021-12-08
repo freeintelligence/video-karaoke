@@ -8,7 +8,10 @@ export class ConfigSettings {
 
     isConfigSetted() {
         ipcMain.on('is-config-setted', (event) => {
-            event.reply('config-is-setted', false);
+            const isSetted = false;
+            const config = {};
+
+            event.reply('config-is-setted', { isSetted, config });
         });
     }
 

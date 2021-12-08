@@ -15,9 +15,7 @@ export class ConfigSettedGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Observable<boolean>((observer) => {
       this.electron.ipcRenderer.send('is-config-setted');
-      this.electron.ipcRenderer.once('config-is-setted', (event, setted) => {
-        const isSetted = Boolean(setted);
-
+      this.electron.ipcRenderer.once('config-is-setted', (event, { isSetted, config }) => {
         if (!isSetted) {
           this.router.navigateByUrl('/config');
         }
