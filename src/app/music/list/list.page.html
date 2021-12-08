@@ -30,6 +30,19 @@
           Artista
         </ion-card-title>
       </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-virtual-scroll [items]="artistList">
+            <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+              <ion-thumbnail slot="start">
+                <img [src]="item.image" />
+              </ion-thumbnail>
+              <ion-label>{{ item.name }}</ion-label>
+            </ion-item>
+          </ion-virtual-scroll>
+        </ion-list>
+      </ion-card-content>
     </ion-card>
   </div>
   
