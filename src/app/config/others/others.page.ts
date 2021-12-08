@@ -14,6 +14,8 @@ export class OthersPage implements OnInit {
   @ViewChildren(IonItem) items: QueryList<IonItem>;
   @ViewChild('submitButton') submitButton: IonButton;
 
+  isLoading: boolean = false;
+
   configGroup: FormGroup = new FormGroup({
     genreSearch: new FormControl(null),
     artistSearch: new FormControl(null),
@@ -37,10 +39,27 @@ export class OthersPage implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.code === 'KeyW') {
+    if (event.code === this.configService.lastConfig.buttonUp) {
       this.setFocusOnPreviousElement();
-    } else if (event.code === 'KeyS') {
+    } else if (event.code === this.configService.lastConfig.buttonDown) {
       this.setFocusOnNextElement();
+    } else if (event.code === this.configService.lastConfig.buttonEnter) {
+      const current = this.getCurrentItem();
+
+      if (!current.item && this.submitButton.color === 'warning') {
+        this.onSubmit();
+      } else if (current.item) {
+        switch (current.index) {
+          case 0: {
+            this.configGroup.controls.genreSearch.setValue(!Boolean(this.configGroup.controls.genreSearch.value));
+            break;
+          }
+          default: {
+            this.configGroup.controls.artistSearch.setValue(!Boolean(this.configGroup.controls.artistSearch.value));
+            break;
+          }
+        }
+      }
     }
   }
 
@@ -59,43 +78,51 @@ export class OthersPage implements OnInit {
   }
 
   setFocusOnPreviousElement() {
-    let currentId: number, len = this.items.length, current = this.items.find((item, id) => {
-      currentId = id;
-      return item.color !== 'none';
-    });
+    const current = this.getCurrentItem();
   
-    if (!current) {
+    if (!current.item) {
       return this.setFocusOnElement(this.items.last);
     }
 
-    if (currentId === 0) {
+    if (current.index === 0) {
       this.setFocusOnElement();
       this.submitButton.color = 'warning';
       this.scrollToElement(this.submitButton as any);
     } else {
-      this.setFocusOnElement(this.items.get(currentId - 1));
+      this.setFocusOnElement(this.items.get(current.index - 1));
     }
   }
 
   setFocusOnNextElement() {
-    let currentId: number, len = this.items.length, current = this.items.find((item, id) => {
-      currentId = id;
-      return item.color !== 'none';
-    });
+    const current = this.getCurrentItem();
 
-    if (!current) {
+    if (!current.item) {
       return this.setFocusOnElement(this.items.get(0));
     }
 
-    if (currentId + 1 >= len) {
+    if (current.index + 1 >= current.len) {
       this.setFocusOnElement();
       this.submitButton.color = 'warning';
     } else {
-      this.setFocusOnElement(this.items.get(currentId + 1));
+      this.setFocusOnElement(this.items.get(current.index + 1));
     }
   }
 
+  getCurrentItem() {
+    let index: number = -1, len = this.items.length, item = this.items.find((item, id) => {
+      index = id;
+      return item.color !== 'none';
+    });
+
+    return { index, len, item };
+  }
+
   async onSubmit() {
+    if (this.isLoading) {
+      return;
+    }
+
+    this.isLoading = true;
     const loading = await this.loadingController.create({
       message: 'Guardando configuración...',
       backdropDismiss: false,
@@ -107,6 +134,7 @@ export class OthersPage implements OnInit {
     this.router.navigateByUrl('/');
 
     await loading.dismiss();
+    this.isLoading = false;
   }
 
 }

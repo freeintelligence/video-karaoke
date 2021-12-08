@@ -6,6 +6,8 @@ import { ElectronService } from 'src/app/electron.service';
 })
 export class ConfigService {
 
+  lastConfig: any = {};
+
   constructor(private electron: ElectronService) { }
 
   async getConfig(): Promise<any> {
@@ -14,6 +16,7 @@ export class ConfigService {
 
       this.electron.ipcRenderer.send('is-config-setted');
       this.electron.ipcRenderer.once('config-is-setted', (event, config) => {
+        this.lastConfig = config;
         if (timeout) {
           clearTimeout(timeout);
         }
