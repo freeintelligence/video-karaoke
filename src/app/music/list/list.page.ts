@@ -11,7 +11,7 @@ export class ListPage implements OnInit {
   artistList: any[] = [];
   songList: any[] = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.genreList = [

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ListPageRoutingModule } from './list-routing.module';
 
 import { ListPage } from './list.page';
@@ -13,7 +13,8 @@ import { ListPage } from './list.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ListPageRoutingModule
+    ListPageRoutingModule,
+    ScrollingModule,
   ],
   declarations: [ListPage]
 })
