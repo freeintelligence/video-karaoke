@@ -12,6 +12,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, useHash: true })
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [ ConfigSettedGuard ],
 })
 export class AppRoutingModule { }
