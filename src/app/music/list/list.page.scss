@@ -51,13 +51,66 @@ ion-list {
 }
 
 .genre-list {
-    width: 20%;
+    width: 140px;
+    transition: .2s all;
+}
+
+.genre-list.actual {
+    width: 332px;
+    transition: .2s all;
 }
 
 .artist-list {
-    width: 20%;
+    width: 140px;
+    transition: .2s all;
+}
+
+.artist-list.actual {
+    width: 332px;
+    transition: .2s all;
+}
+
+.mini-play {
+    width: 448px;
+
+    ion-card {
+        ion-card-content {
+            padding: 0;
+            margin: 0;
+
+            .mini-sep {
+                width: 100%;
+                height:12px;
+            }
+
+            .mini-previous {
+                width: 100%;
+                height: 332px;
+                padding: 18px;
+
+                .mini-video {
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('https://c.tenor.com/gRSz9MGKjecAAAAd/roddy-ricch-music-video.gif');
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                }
+            }
+
+            .mini-title {
+                padding: 12px 18px;
+                font-size: 18px;
+                text-align: center;
+                border-radius: 6px;
+            }
+        }
+    }
 }
 
 .songs-list {
-    width: 60%;
+    width: calc(100% - 140px - 332px - 448px);
+}
+
+.songs-list.actual {
+    width: calc(100% - 140px - 140px - 448px);
 }

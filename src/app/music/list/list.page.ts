@@ -36,7 +36,7 @@ export class ListPage implements OnInit {
       { id: 11, name: 'Gregory Isaacs', image: 'https://www.lifeder.com/wp-content/uploads/2020/02/321px-Gregory_Isaacs_SNWMF_2010_1_-_on_stage-2-281x420.jpg' },
     ];
 
-    this.songList = Array.from({ length: 100 }).map((val, i) => ({ id: i, name: 'Canción #' + i }));
+    this.songList = Array.from({ length: 20 }).map((val, i) => ({ id: i, name: 'Canción #' + i }));
   }
 
 }
