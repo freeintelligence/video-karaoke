@@ -14,22 +14,24 @@
 
   <ion-card class="bg-card-07 bg-00" color="dark">
     <ion-card-content style="width: 1024px; margin: 0 auto;">
-      <ion-list>
-        <ion-item-divider color="none">
-          <ion-label>BÚSQUEDA</ion-label>
-        </ion-item-divider>
+      <form [formGroup]="configGroup" (ngSubmit)="onSubmit()">
+        <ion-list>
+          <ion-item-divider color="none">
+            <ion-label>BÚSQUEDA</ion-label>
+          </ion-item-divider>
 
-        <ion-item button>
-          <ion-label>Habilitar búsqueda por género</ion-label>
-          <ion-toggle slot="end"></ion-toggle>
-        </ion-item>
-        <ion-item button>
-          <ion-label>Habilitar búsqueda por artista</ion-label>
-          <ion-toggle slot="end"></ion-toggle>
-        </ion-item>
-      </ion-list>
+          <ion-item button>
+            <ion-label>Habilitar búsqueda por género</ion-label>
+            <ion-toggle slot="end" formControlName="genreSearch"></ion-toggle>
+          </ion-item>
+          <ion-item button>
+            <ion-label>Habilitar búsqueda por artista</ion-label>
+            <ion-toggle slot="end" formControlName="artistSearch"></ion-toggle>
+          </ion-item>
+        </ion-list>
+      </form>
 
-      <ion-button #submitButton color="primary" style="width: 100%;">Guardar configuración <ion-icon slot="end" name="save"></ion-icon></ion-button>
+      <ion-button #submitButton color="primary" type="submit" style="width: 100%;">Guardar configuración <ion-icon slot="end" name="save"></ion-icon></ion-button>
     </ion-card-content>
   </ion-card>
 

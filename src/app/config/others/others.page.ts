@@ -1,5 +1,8 @@
 import { Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { IonButton, IonItem } from '@ionic/angular';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { IonButton, IonItem, LoadingController } from '@ionic/angular';
+import { ConfigService } from 'src/services/config.service';
 
 @Component({
   selector: 'app-others',
@@ -11,10 +14,21 @@ export class OthersPage implements OnInit {
   @ViewChildren(IonItem) items: QueryList<IonItem>;
   @ViewChild('submitButton') submitButton: IonButton;
 
-  constructor() { }
+  configGroup: FormGroup = new FormGroup({
+    genreSearch: new FormControl(null),
+    artistSearch: new FormControl(null),
+  });
+
+  constructor(private loadingController: LoadingController, private configService: ConfigService, private router: Router) { }
 
   ngOnInit() {
-    
+    this.loadConfig();
+  }
+
+  async loadConfig() {
+    const config = await this.configService.getConfig();
+    this.configGroup.controls.genreSearch.setValue(config.genreSearch);
+    this.configGroup.controls.artistSearch.setValue(config.artistSearch);
   }
 
   ngAfterViewInit() {
@@ -79,6 +93,20 @@ export class OthersPage implements OnInit {
     } else {
       this.setFocusOnElement(this.items.get(currentId + 1));
     }
+  }
+
+  async onSubmit() {
+    const loading = await this.loadingController.create({
+      message: 'Guardando configuración...',
+      backdropDismiss: false,
+      keyboardClose: false,
+    });
+    await loading.present();
+
+    await this.configService.setConfig(this.configGroup.value);
+    this.router.navigateByUrl('/');
+
+    await loading.dismiss();
   }
 
 }

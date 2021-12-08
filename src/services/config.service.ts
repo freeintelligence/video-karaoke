@@ -21,4 +21,18 @@ export class ConfigService {
       });
     });
   }
+
+  async setConfig(config: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
+
+      this.electron.ipcRenderer.send('set-config', config);
+      this.electron.ipcRenderer.once('config-setted', (event, config) => {
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        return resolve(config);
+      });
+    });
+  }
 }
