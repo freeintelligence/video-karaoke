@@ -9,6 +9,7 @@ export class ListPage implements OnInit {
 
   genreList: any[] = [];
   artistList: any[] = [];
+  songList: any[] = [];
 
   constructor() { }
 
@@ -34,6 +35,8 @@ export class ListPage implements OnInit {
       { id: 10, name: 'Alpha Blondy', image: 'https://www.lifeder.com/wp-content/uploads/2020/02/640px-Alpha_Blondy_2007.07.12_002-628x420.jpg' },
       { id: 11, name: 'Gregory Isaacs', image: 'https://www.lifeder.com/wp-content/uploads/2020/02/321px-Gregory_Isaacs_SNWMF_2010_1_-_on_stage-2-281x420.jpg' },
     ];
+
+    this.songList = Array.from({ length: 100 }).map((val, i) => ({ id: i, name: 'Canción #' + i }));
   }
 
 }

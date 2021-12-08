@@ -53,6 +53,20 @@
           Canciones
         </ion-card-title>
       </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-virtual-scroll [items]="songList">
+            <ion-item *virtualItem="let item;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+              <ion-icon name="play" slot="start"></ion-icon>
+              <ion-label>
+                <h2>{{ item.name }}</h2>
+                <p>Duración: 02:42 minutos</p>
+              </ion-label>
+            </ion-item>
+          </ion-virtual-scroll>
+        </ion-list>
+      </ion-card-content>
     </ion-card>
   </div>
 
