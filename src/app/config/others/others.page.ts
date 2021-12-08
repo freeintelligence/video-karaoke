@@ -54,7 +54,7 @@ export class OthersPage implements OnInit {
             this.configGroup.controls.genreSearch.setValue(!Boolean(this.configGroup.controls.genreSearch.value));
             break;
           }
-          default: {
+          case 1: {
             this.configGroup.controls.artistSearch.setValue(!Boolean(this.configGroup.controls.artistSearch.value));
             break;
           }
