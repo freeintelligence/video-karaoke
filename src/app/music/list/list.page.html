@@ -1,7 +1,7 @@
 <ion-content>
 
   <div class="box-container">
-    <div class="list-items-container genre-list">
+    <div class="list-items-container genre-list" *ngIf="configService.lastConfig.genreSearch">
       <ion-card class="bg-card-05" color="dark">
         <ion-card-header>
           <ion-card-title>
@@ -26,7 +26,7 @@
       </ion-card>
     </div>
     
-    <div class="list-items-container artist-list">
+    <div class="list-items-container artist-list" *ngIf="configService.lastConfig.artistSearch">
       <ion-card class="bg-card-05" color="dark">
         <ion-card-header>
           <ion-card-title>
