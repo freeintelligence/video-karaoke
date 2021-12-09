@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { ElectronService } from 'src/app/electron.service';
 
 @Component({
   selector: 'app-list',
@@ -11,7 +12,7 @@ export class ListPage implements OnInit {
   artistList: any[] = [];
   songList: any[] = [];
 
-  constructor() {}
+  constructor(private electron: ElectronService) {}
 
   ngOnInit() {
     this.genreList = [

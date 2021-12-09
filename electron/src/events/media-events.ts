@@ -13,13 +13,12 @@ export class MediaEvents {
 
     async getMedia() {
         ipcMain.on('get-media', async (event, filters) => {
-            const result = Media.findAll({
+            const result = await Media.findAll({
                 where: {
 
-                }
+                },
+                raw: true,
             });
-
-            console.log('result', result);
 
             event.reply('getting-media', result);
         });
