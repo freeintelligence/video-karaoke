@@ -11,11 +11,11 @@ import { MediaService } from 'src/services/media.service';
 })
 export class ListPage implements OnInit {
 
-  genreLoading: boolean = false;
+  genreLoading: boolean = true;
   genreList: any[] = [];
-  artistLoading: boolean = false;
+  artistLoading: boolean = true;
   artistList: any[] = [];
-  songLoading: boolean = false;
+  songLoading: boolean = true;
   songList: any[] = [];
 
   constructor(private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService) {}
@@ -35,10 +35,6 @@ export class ListPage implements OnInit {
       return false;
     }
 
-    if (this.genreLoading) {
-      return false;
-    }
-
     this.genreLoading = true;
     this.genreList = await this.genreService.getGenres();
     this.genreLoading = false;
@@ -48,10 +44,6 @@ export class ListPage implements OnInit {
 
   async loadArtists() {
     if (!this.configService.lastConfig.artistSearch) {
-      return false;
-    }
-
-    if (this.artistLoading) {
       return false;
     }
 
