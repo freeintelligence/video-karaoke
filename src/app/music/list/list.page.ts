@@ -21,8 +21,13 @@ export class ListPage implements OnInit {
   constructor(private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService) {}
 
   ngOnInit() {
-    this.loadGenres();
-    this.loadArtists();
+    this.run();
+  }
+
+  async run() {
+    await this.loadGenres();
+    await this.loadArtists();
+    await this.loadSongs();
   }
 
   async loadGenres() {
