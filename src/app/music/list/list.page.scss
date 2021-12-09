@@ -19,6 +19,17 @@ ion-list {
     vertical-align: top;
     box-sizing: border-box !important;
 
+    .spinner-load-data {
+        width: 100%;
+        margin-top: 48px;
+        text-align: center;
+
+        ion-spinner {
+            width: 48px;
+            height: 48px;
+        }
+    }
+
     ion-card {
         position: relative;
         margin: 10px !important;

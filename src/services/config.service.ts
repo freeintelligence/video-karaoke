@@ -12,6 +12,8 @@ export class ConfigService {
 
   async getConfig(): Promise<any> {
     return new Promise((resolve, reject) => {
+      return resolve({ genreSearch: true, artistSearch: true, firstConfig: true });
+      /*
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
 
       this.electron.ipcRenderer.send('is-config-setted');
@@ -22,6 +24,7 @@ export class ConfigService {
         }
         return resolve(config);
       });
+      */
     });
   }
 
