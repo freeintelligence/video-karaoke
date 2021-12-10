@@ -13,7 +13,7 @@ export class HttpServer {
 
   async create() {
     http.createServer((req, res) => {
-      const stream = fs.createReadStream(path.join(Config.imagesPath, req.url));
+      const stream = fs.createReadStream(path.join(Config.databasePath, req.url));
 
       stream.on('error', () => {
         res.writeHead(404);
