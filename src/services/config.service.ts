@@ -7,6 +7,9 @@ import { ElectronService } from 'src/app/electron.service';
 export class ConfigService {
 
   lastConfig: any = {};
+  httpServer = {
+    port: 6868,
+  };
 
   constructor(private electron: ElectronService) { }
 
