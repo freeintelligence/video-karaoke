@@ -35,20 +35,18 @@
         </ion-card-header>
   
         <ion-card-content>
-          <div class="spinner-load-data"><ion-spinner></ion-spinner></div>
+          <div class="spinner-load-data" *ngIf="artistLoading"><ion-spinner></ion-spinner></div>
 
-          <!--
-          <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336">
+          <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336" *ngIf="!artistLoading">
             <ion-list>
-              <ion-item *cdkVirtualFor="let item of artistList;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+              <ion-item *cdkVirtualFor="let item of artistList;" button detail="true">
                 <ion-thumbnail slot="start">
-                  <img [src]="item.image" />
+                  <img [src]="item.imageUrl" />
                 </ion-thumbnail>
                 <ion-label>{{ item.name }}</ion-label>
               </ion-item>
             </ion-list>
           </cdk-virtual-scroll-viewport>
-          -->
         </ion-card-content>
       </ion-card>
     </div>
@@ -62,12 +60,11 @@
         </ion-card-header>
   
         <ion-card-content>
-          <div class="spinner-load-data"><ion-spinner></ion-spinner></div>
+          <div class="spinner-load-data" *ngIf="songLoading"><ion-spinner></ion-spinner></div>
 
-          <!--
-          <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336">
+          <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336" *ngIf="!songLoading">
             <ion-list>
-              <ion-item *cdkVirtualFor="let item of songList;" button detail="true" [color]="item.id == 1 ? 'warning' : ''">
+              <ion-item *cdkVirtualFor="let item of songList;" button detail="true">
                 <ion-icon name="play" slot="start"></ion-icon>
                 <ion-label>
                   <h2>{{ item.name }}</h2>
@@ -76,7 +73,6 @@
               </ion-item>
             </ion-list>
           </cdk-virtual-scroll-viewport>
-          -->
         </ion-card-content>
       </ion-card>
     </div>
