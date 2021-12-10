@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GenreModel } from 'src/models/genre.service';
 import { ArtistService } from 'src/services/artist.service';
 import { ConfigService } from 'src/services/config.service';
 import { GenreService } from 'src/services/genre.service';
@@ -12,7 +13,7 @@ import { MediaService } from 'src/services/media.service';
 export class ListPage implements OnInit {
 
   genreLoading: boolean = true;
-  genreList: any[] = [];
+  genreList: GenreModel[] = [];
   artistLoading: boolean = true;
   artistList: any[] = [];
   songLoading: boolean = true;

@@ -1,7 +1,7 @@
 import { app } from "electron";
 import * as path from 'path';
 
-class Config {
+export class Config {
 
   httpServer = {
     port: 6868,
@@ -29,6 +29,10 @@ class Config {
 
   mediaImagesPath(p: string = '') {
     return path.join(this.imagesPath(), 'media-images', p);
+  }
+
+  pathToUrl(p: string = '') {
+    return p.replace(this.databasePath(), `http://localhost:${this.httpServer.port}`);
   }
 
 }

@@ -16,7 +16,7 @@
             <ion-list>
               <ion-item *cdkVirtualFor="let item of genreList;" button detail="true">
                 <ion-thumbnail slot="start">
-                  <img [src]="item.image" />
+                  <img [src]="item.imageUrl" />
                 </ion-thumbnail>
                 <ion-label>{{ item.name }}</ion-label>
               </ion-item>

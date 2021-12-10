@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'src/app/electron.service';
+import { GenreModel } from 'src/models/genre.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GenreService {
 
-  constructor(private electron: ElectronService) { }
+  constructor(private electron: ElectronService, private genreModel: GenreModel) { }
 
-  async getGenres(filters: any = {}): Promise<any[]> {
+  async getGenres(filters: any = {}): Promise<GenreModel[]> {
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
 
@@ -17,7 +18,7 @@ export class GenreService {
         if (timeout) {
           clearTimeout(timeout);
         }
-        return resolve(result);
+        return resolve(this.genreModel.newFromArray(result));
       });
     });
   }

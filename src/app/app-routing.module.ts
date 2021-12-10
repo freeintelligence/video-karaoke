@@ -9,7 +9,7 @@ const routes: Routes = [
       { path: 'music', loadChildren: () => import('./music/music.module').then(m => m.MusicModule) },
       { path: '', redirectTo: 'music', pathMatch: 'full' },
     ],
-    canActivate: [ ConfigSettedGuard ],
+    canActivateChild: [ ConfigSettedGuard ],
   },
   { path: 'config', loadChildren: () => import('./config/config.module').then(m => m.ConfigModule) },
 ];
