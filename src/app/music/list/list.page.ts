@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ArtistModel } from 'src/models/artist.service';
 import { GenreModel } from 'src/models/genre.service';
 import { ArtistService } from 'src/services/artist.service';
 import { ConfigService } from 'src/services/config.service';
@@ -15,7 +16,7 @@ export class ListPage implements OnInit {
   genreLoading: boolean = true;
   genreList: GenreModel[] = [];
   artistLoading: boolean = true;
-  artistList: any[] = [];
+  artistList: ArtistModel[] = [];
   songLoading: boolean = true;
   songList: any[] = [];
 
@@ -37,7 +38,7 @@ export class ListPage implements OnInit {
     }
 
     this.genreLoading = true;
-    this.genreList = await this.genreService.getGenres();
+    this.genreList = this.injectNull(await this.genreService.getGenres());
     this.genreLoading = false;
 
     return true;
@@ -49,7 +50,7 @@ export class ListPage implements OnInit {
     }
 
     this.artistLoading = true;
-    this.artistList = await this.artistService.getArtists();
+    this.artistList = this.injectNull(await this.artistService.getArtists());
     this.artistLoading = false;
 
     return true;
@@ -57,6 +58,27 @@ export class ListPage implements OnInit {
 
   async loadSongs() {
 
+  }
+
+  injectNull(arr: any[], every: number = 6): any[] {
+    const result = [];
+    const add = () => result.push({ name: 'Todos', imageUrl: '/assets/images/check-all.png' });
+
+    if (!(arr instanceof Array)) {
+      arr = [];
+    }
+
+    add();
+
+    arr.forEach((value, index) => {
+      if (index % every === 0) {
+        add();
+      }
+
+      result.push(value);
+    });
+
+    return result;
   }
 
 }
