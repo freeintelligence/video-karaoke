@@ -10,6 +10,10 @@ Artist.init({
         type: DataTypes.STRING(64),
         allowNull: false,
     },
+    imageExt: {
+        type: DataTypes.CHAR,
+        allowNull: false,
+    },
 }, { sequelize: Database, modelName: 'artist' });
 
 Artist.sync({ alter: true });

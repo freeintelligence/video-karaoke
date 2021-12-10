@@ -9,6 +9,7 @@ import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 //import { autoUpdater } from 'electron-updater';
 import { mainEvents } from './events';
+import { HttpServer } from './http/http';
 
 import {
   ElectronCapacitorApp,
@@ -65,6 +66,8 @@ if (electronIsDev) {
   // Check for updates if we are in a packaged app.
   //autoUpdater.checkForUpdatesAndNotify();
 
+  // HTTP Server
+  await new HttpServer().run();
   // Events
   await mainEvents();
 })();

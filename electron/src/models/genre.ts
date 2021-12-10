@@ -10,6 +10,10 @@ Genre.init({
         type: DataTypes.STRING(64),
         allowNull: false,
     },
+    imageExt: {
+        type: DataTypes.CHAR,
+        allowNull: false,
+    },
 }, { sequelize: Database, modelName: 'genre' });
 
 Genre.sync({ alter: true });

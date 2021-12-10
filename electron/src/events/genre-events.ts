@@ -1,27 +1,25 @@
-import { ipcMain } from "electron";
+import { ipcMain, app, protocol } from "electron";
 import { Genre } from './../models/genre';
 
 export class GenreEvents {
 
-    constructor() {
-        this.run();
-    }
+  constructor() {
+    this.run();
+  }
 
-    async run() {
-        await this.getGenres();
-    }
+  async run() {
+    await this.getGenres();
+  }
 
-    async getGenres() {
-        ipcMain.on('get-genres', async (event, filters) => {
-            const result = await Genre.findAll({
-                where: {
+  async getGenres() {
+    ipcMain.on('get-genres', async (event, filters) => {
+      const result = await Genre.findAll({
+        where: { },
+        raw: true,
+      });
 
-                },
-                raw: true,
-            });
-
-            event.reply('getting-genres', result);
-        });
-    }
+      event.reply('getting-genres', result);
+    });
+  }
 
 }
