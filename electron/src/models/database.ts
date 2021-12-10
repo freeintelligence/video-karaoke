@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-import { app } from 'electron';
 import * as path from 'path';
 import { config } from './../config';
 
