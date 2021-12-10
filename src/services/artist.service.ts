@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'src/app/electron.service';
+import { ArtistModel } from 'src/models/artist.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArtistService {
 
-  constructor(private electron: ElectronService) { }
+  constructor(private electron: ElectronService, private artistModel: ArtistModel) { }
 
-  async getArtists(filters: any = {}): Promise<any[]> {
+  async getArtists(filters: any = {}): Promise<ArtistModel[]> {
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
 
@@ -17,7 +18,7 @@ export class ArtistService {
         if (timeout) {
           clearTimeout(timeout);
         }
-        return resolve(result);
+        return resolve(this.artistModel.newFromArray(result));
       });
     });
   }
