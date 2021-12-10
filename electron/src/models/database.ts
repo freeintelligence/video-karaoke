@@ -1,8 +1,11 @@
 import { Sequelize } from 'sequelize';
+import { app } from 'electron';
+import * as path from 'path';
+import { config } from './../config';
 
 const database = new Sequelize({
     dialect: 'sqlite',
-    storage: 'database.db',
+    storage: path.join(config.databasePath('database.db')),
     logging: false,
 });
 
