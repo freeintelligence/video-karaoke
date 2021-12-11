@@ -9,12 +9,12 @@ export class ArtistService {
 
   constructor(private electron: ElectronService, private artistModel: ArtistModel) { }
 
-  async getArtists(filters: any = {}): Promise<ArtistModel[]> {
+  async getArtists(filters: { genreId?: number } = {}): Promise<ArtistModel[]> {
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
 
       this.electron.ipcRenderer.send('get-artists', filters);
-      this.electron.ipcRenderer.once('getting-artists', (event, result) => {
+      this.electron.ipcRenderer.once('getting-artists', (event, result: ArtistModel[]) => {
         if (timeout) {
           clearTimeout(timeout);
         }

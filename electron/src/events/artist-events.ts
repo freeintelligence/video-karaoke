@@ -12,11 +12,15 @@ export class ArtistEvents {
     }
 
     async getArtists() {
-        ipcMain.on('get-artists', async (event, filters) => {
-            const result = await Artist.findAll({
-                where: {
+        ipcMain.on('get-artists', async (event, filters: { genreId?: number } = {}) => {
+            const where: any = {};
+            
+            if (typeof filters.genreId === 'number') {
+                where.genreId = filters.genreId;
+            }
 
-                },
+            const result = await Artist.findAll({
+                where,
                 raw: true,
             });
 

@@ -44,13 +44,13 @@ export class ListPage implements OnInit {
     return true;
   }
 
-  async loadArtists() {
+  async loadArtists(genreId?: number) {
     if (!this.configService.lastConfig.artistSearch) {
       return false;
     }
 
     this.artistLoading = true;
-    this.artistList = this.injectNull(await this.artistService.getArtists());
+    this.artistList = this.injectNull(await this.artistService.getArtists({ genreId }));
     this.artistLoading = false;
 
     return true;

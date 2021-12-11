@@ -12,7 +12,7 @@ export class GenreEvents {
   }
 
   async getGenres() {
-    ipcMain.on('get-genres', async (event, filters) => {
+    ipcMain.on('get-genres', async (event) => {
       const result = await Genre.findAll({
         where: { },
         raw: true,
