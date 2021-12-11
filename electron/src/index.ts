@@ -72,7 +72,7 @@ if (electronIsDev) {
   // Events
   await mainEvents();
   // Database
-  runDatabaseRelationships();
+  await runDatabaseRelationships();
 })();
 
 // Handle when all of our windows are close (platforms have their own expectations).
