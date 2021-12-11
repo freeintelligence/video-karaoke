@@ -15,5 +15,3 @@ Media.init({
         allowNull: true,
     },
 }, { sequelize: Database, modelName: 'media' });
-
-Media.sync({ alter: true });

@@ -15,5 +15,3 @@ Artist.init({
         allowNull: true,
     },
 }, { sequelize: Database, modelName: 'artist' });
-
-Artist.sync({ alter: true });

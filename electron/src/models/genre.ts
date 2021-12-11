@@ -15,5 +15,3 @@ Genre.init({
         allowNull: true,
     },
 }, { sequelize: Database, modelName: 'genre' });
-
-Genre.sync({ alter: true });

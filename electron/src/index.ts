@@ -10,6 +10,7 @@ import unhandled from 'electron-unhandled';
 //import { autoUpdater } from 'electron-updater';
 import { mainEvents } from './events';
 import { HttpServer } from './http/http';
+import { run as runDatabaseRelationships } from './models/relationships';
 
 import {
   ElectronCapacitorApp,
@@ -70,6 +71,8 @@ if (electronIsDev) {
   await new HttpServer().run();
   // Events
   await mainEvents();
+  // Database
+  runDatabaseRelationships();
 })();
 
 // Handle when all of our windows are close (platforms have their own expectations).
