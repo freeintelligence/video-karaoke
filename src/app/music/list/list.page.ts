@@ -71,7 +71,7 @@ export class ListPage implements OnInit {
     add();
 
     arr.forEach((value, index) => {
-      if (index % every === 0) {
+      if (index % every === 0 && index) {
         add();
       }
 
