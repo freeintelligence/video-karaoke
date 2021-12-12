@@ -120,8 +120,10 @@ ion-list {
 
 .songs-list {
     width: calc(100% - 140px - 332px - 448px);
+    transition: .2s all;
 }
 
 .songs-list.actual {
     width: calc(100% - 140px - 140px - 448px);
+    transition: .2s all;
 }

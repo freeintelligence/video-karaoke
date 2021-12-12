@@ -1,4 +1,5 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IonItem } from '@ionic/angular';
 import { ArtistModel } from 'src/models/artist.service';
 import { GenreModel } from 'src/models/genre.service';
@@ -31,7 +32,9 @@ export class ListPage implements OnInit {
   mediaList: MediaModel[] = [];
   mediaCurrentIndex: number;
 
-  @ViewChildren('.genre-list-item') genreListItem: QueryList<IonItem>;
+  @ViewChild('virtualScrollGenre') virtualScrollGenre: CdkVirtualScrollViewport;
+  @ViewChild('virtualScrollArtist') virtualScrollArtist: CdkVirtualScrollViewport;
+  @ViewChild('virtualScrollMedia') virtualScrollMedia: CdkVirtualScrollViewport;
 
   constructor(private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService) {}
 
@@ -107,6 +110,59 @@ export class ListPage implements OnInit {
 
         }
       }
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.genreLoading || this.artistLoading || this.mediaLoading) {
+      return false;
+    }
+
+    if (event.code === this.configService.lastConfig.buttonUp) {
+      // Up
+      if (this.actualTab === 'genre') {
+        this.genreCurrentIndex = this.genreCurrentIndex - 1 < 0 ? this.genreList.length - 1 : this.genreCurrentIndex - 1;
+        this.virtualScrollGenre.scrollToIndex(this.genreCurrentIndex, 'smooth');
+      } else if (this.actualTab === 'artist') {
+        this.artistCurrentIndex = this.artistCurrentIndex - 1 < 0 ? this.artistList.length - 1 : this.artistCurrentIndex - 1;
+        this.virtualScrollArtist.scrollToIndex(this.artistCurrentIndex, 'smooth');
+      } else if (this.actualTab === 'media') {
+        this.mediaCurrentIndex = this.mediaCurrentIndex - 1 < 0 ? this.mediaList.length - 1 : this.mediaCurrentIndex - 1;
+        this.virtualScrollMedia.scrollToIndex(this.mediaCurrentIndex, 'smooth');
+      }
+    } else if (event.code === this.configService.lastConfig.buttonDown) {
+      // Down
+      if (this.actualTab === 'genre') {
+        this.genreCurrentIndex = this.genreCurrentIndex + 1 >= this.genreList.length ? 0 : this.genreCurrentIndex + 1;
+        this.virtualScrollGenre.scrollToIndex(this.genreCurrentIndex, 'smooth');
+      } else if (this.actualTab === 'artist') {
+        this.artistCurrentIndex = this.artistCurrentIndex + 1 >= this.artistList.length ? 0 : this.artistCurrentIndex + 1;
+        this.virtualScrollArtist.scrollToIndex(this.artistCurrentIndex, 'smooth');
+      } else if (this.actualTab === 'media') {
+        this.mediaCurrentIndex = this.mediaCurrentIndex + 1 >= this.mediaList.length ? 0 : this.mediaCurrentIndex + 1;
+        this.virtualScrollMedia.scrollToIndex(this.mediaCurrentIndex, 'smooth');
+      }
+    } else if (event.code === this.configService.lastConfig.buttonLeft) {
+      // Left
+      if (this.actualTab === 'genre') {
+        this.setTab('media');
+      } else if (this.actualTab === 'artist') {
+        this.setTab('genre');
+      } else if (this.actualTab === 'media') {
+        this.setTab('artist');
+      }
+    } else if (event.code === this.configService.lastConfig.buttonRight) {
+      // Right
+      if (this.actualTab === 'genre') {
+        this.setTab('artist');
+      } else if (this.actualTab === 'artist') {
+        this.setTab('media');
+      } else if (this.actualTab === 'media') {
+        this.setTab('genre');
+      }
+    } else if (event.code === this.configService.lastConfig.buttonEnter) {
+      
     }
   }
 
