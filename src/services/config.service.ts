@@ -16,23 +16,22 @@ export class ConfigService {
 
   async getConfig(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (this.electron.isElectronApp) {
-        // Electron App
-        const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
-
-        this.electron.ipcRenderer.send('is-config-setted');
-        this.electron.ipcRenderer.once('config-is-setted', (event, config) => {
-          this.lastConfig = config;
-          if (timeout) {
-            clearTimeout(timeout);
-          }
-          return resolve(config);
-        });
-      } else {
+      if (!this.electron.isElectronApp) {
         // Browser App
         this.lastConfig = browserDataConfig;
         return resolve(browserDataConfig);
       }
+
+      const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
+
+      this.electron.ipcRenderer.send('is-config-setted');
+      this.electron.ipcRenderer.once('config-is-setted', (event, config) => {
+        this.lastConfig = config;
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        return resolve(config);
+      })
     });
   }
 
