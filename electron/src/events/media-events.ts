@@ -12,11 +12,19 @@ export class MediaEvents {
     }
 
     async getMedia() {
-        ipcMain.on('get-media', async (event, filters) => {
-            const result = await Media.findAll({
-                where: {
+        ipcMain.on('get-media', async (event, filters:  { genreId?: number, artistId?: number } = {}) => {
+            const where: any = {};
 
-                },
+            /*if (typeof filters.genreId === 'number') {
+                where.genreId = filters.genreId;
+            }*/
+
+            if (typeof filters.artistId === 'number') {
+                where.artistId = filters.artistId;
+            }
+
+            const result = await Media.findAll({
+                where,
                 raw: true,
             });
 
