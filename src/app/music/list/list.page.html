@@ -1,7 +1,7 @@
 <ion-content>
 
   <div class="box-container">
-    <div class="list-items-container genre-list actual" *ngIf="configService.lastConfig.genreSearch">
+    <div class="list-items-container genre-list" [class.actual]="actualTab === 'genre'" *ngIf="configService.lastConfig.genreSearch">
       <ion-card class="bg-card-05" color="dark">
         <ion-card-header>
           <ion-card-title>
@@ -14,7 +14,7 @@
 
           <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336" *ngIf="!genreLoading">
             <ion-list>
-              <ion-item *cdkVirtualFor="let item of genreList;" button detail="true">
+              <ion-item *cdkVirtualFor="let item of genreList; let index = index;" button detail="true" [color]="getItemColor(index, 'genre')">
                 <ion-thumbnail slot="start">
                   <img [src]="item.imageUrl" />
                 </ion-thumbnail>
@@ -26,7 +26,7 @@
       </ion-card>
     </div>
     
-    <div class="list-items-container artist-list" *ngIf="configService.lastConfig.artistSearch">
+    <div class="list-items-container artist-list" [class.actual]="actualTab === 'artist'" *ngIf="configService.lastConfig.artistSearch">
       <ion-card class="bg-card-05" color="dark">
         <ion-card-header>
           <ion-card-title>
@@ -39,7 +39,7 @@
 
           <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336" *ngIf="!artistLoading">
             <ion-list>
-              <ion-item *cdkVirtualFor="let item of artistList;" button detail="true">
+              <ion-item *cdkVirtualFor="let item of artistList; let index = index;" button detail="true" [color]="getItemColor(index, 'artist')">
                 <ion-thumbnail slot="start">
                   <img [src]="item.imageUrl" />
                 </ion-thumbnail>
@@ -51,7 +51,7 @@
       </ion-card>
     </div>
     
-    <div class="list-items-container songs-list">
+    <div class="list-items-container songs-list" [class.actual]="actualTab === 'media'">
       <ion-card class="bg-card-05" color="dark">
         <ion-card-header>
           <ion-card-title>
@@ -64,7 +64,7 @@
 
           <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336" *ngIf="!mediaLoading">
             <ion-list>
-              <ion-item *cdkVirtualFor="let item of mediaList;" button detail="true">
+              <ion-item *cdkVirtualFor="let item of mediaList; let index = index;" button detail="true" [color]="getItemColor(index, 'media')">
                 <ion-icon name="play" slot="start"></ion-icon>
                 <ion-label>
                   <h2>{{ item.name }}</h2>
