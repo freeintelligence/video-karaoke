@@ -41,8 +41,6 @@ export class ListPage implements OnInit {
 
   async run() {
     await this.loadGenres(true);
-    await this.loadArtists();
-    await this.loadMedia();
   }
 
   async loadGenres(firstLoad: boolean = false) {
@@ -82,16 +80,30 @@ export class ListPage implements OnInit {
   }
 
   async setTab(newTab: typeTabs['tabs'], firstLoad: boolean = false) {
-    const oldTab = this.actualTab;
     this.actualTab = newTab;
 
     switch (this.actualTab) {
       case 'genre': {
         if (firstLoad) {
-          this.genreCurrentIndex = 3;
-          setTimeout(() => this.setTab('artist'), 3000);
+          await this.loadArtists();
+          this.genreCurrentIndex = 0;
+          this.setTab('artist', firstLoad);
         }
         break;
+      }
+      case 'artist': {
+        if (firstLoad) {
+          await this.loadMedia();
+          this.artistCurrentIndex = 0;
+          this.setTab('media', firstLoad);
+        }
+      }
+      case 'media': {
+        if (firstLoad) {
+          if (this.mediaList.length) {
+            this.mediaCurrentIndex = 0;
+          }
+        }
       }
     }
   }
