@@ -52,6 +52,8 @@ export class ListPage implements OnInit {
     this.genreList = this.injectNull(await this.genreService.getGenres());
     this.genreLoading = false;
 
+    this.genreCurrentIndex = this.genreList.length ? 0 : undefined;
+
     if (firstLoad) {
       await this.setTab('genre', firstLoad);
     }
@@ -68,6 +70,8 @@ export class ListPage implements OnInit {
     this.artistList = this.injectNull(await this.artistService.getArtists({ genreId }));
     this.artistLoading = false;
 
+    this.artistCurrentIndex = this.artistList.length ? 0 : undefined;
+
     return true;
   }
 
@@ -75,6 +79,8 @@ export class ListPage implements OnInit {
     this.mediaLoading = true;
     this.mediaList = await this.mediaService.getMedia({ genreId, artistId });
     this.mediaLoading = false;
+
+    this.mediaCurrentIndex = this.mediaList.length ? 0 : undefined;
 
     return true;
   }
@@ -86,7 +92,6 @@ export class ListPage implements OnInit {
       case 'genre': {
         if (firstLoad) {
           await this.loadArtists();
-          this.genreCurrentIndex = 0;
           this.setTab('artist', firstLoad);
         }
         break;
@@ -94,15 +99,12 @@ export class ListPage implements OnInit {
       case 'artist': {
         if (firstLoad) {
           await this.loadMedia();
-          this.artistCurrentIndex = 0;
           this.setTab('media', firstLoad);
         }
       }
       case 'media': {
         if (firstLoad) {
-          if (this.mediaList.length) {
-            this.mediaCurrentIndex = 0;
-          }
+
         }
       }
     }
