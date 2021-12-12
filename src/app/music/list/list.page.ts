@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ArtistModel } from 'src/models/artist.service';
 import { GenreModel } from 'src/models/genre.service';
+import { MediaModel } from 'src/models/media.service';
 import { ArtistService } from 'src/services/artist.service';
 import { ConfigService } from 'src/services/config.service';
 import { GenreService } from 'src/services/genre.service';
@@ -17,8 +18,8 @@ export class ListPage implements OnInit {
   genreList: GenreModel[] = [];
   artistLoading: boolean = true;
   artistList: ArtistModel[] = [];
-  songLoading: boolean = true;
-  songList: any[] = [];
+  mediaLoading: boolean = true;
+  mediaList: MediaModel[] = [];
 
   constructor(private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService) {}
 
@@ -29,7 +30,7 @@ export class ListPage implements OnInit {
   async run() {
     await this.loadGenres();
     await this.loadArtists();
-    await this.loadSongs();
+    await this.loadMedia();
   }
 
   async loadGenres() {
@@ -56,8 +57,12 @@ export class ListPage implements OnInit {
     return true;
   }
 
-  async loadSongs() {
+  async loadMedia(genreId?: number, artistId?: number) {
+    this.mediaLoading = true;
+    this.mediaList = await this.mediaService.getMedia({ genreId, artistId });
+    this.mediaLoading = false;
 
+    return true;
   }
 
   injectNull(arr: any[], every: number = 6): any[] {

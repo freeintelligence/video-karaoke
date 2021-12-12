@@ -60,11 +60,11 @@
         </ion-card-header>
   
         <ion-card-content>
-          <div class="spinner-load-data" *ngIf="songLoading"><ion-spinner></ion-spinner></div>
+          <div class="spinner-load-data" *ngIf="mediaLoading"><ion-spinner></ion-spinner></div>
 
-          <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336" *ngIf="!songLoading">
+          <cdk-virtual-scroll-viewport itemSize="64" minBufferPx="900" maxBufferPx="1336" *ngIf="!mediaLoading">
             <ion-list>
-              <ion-item *cdkVirtualFor="let item of songList;" button detail="true">
+              <ion-item *cdkVirtualFor="let item of mediaList;" button detail="true">
                 <ion-icon name="play" slot="start"></ion-icon>
                 <ion-label>
                   <h2>{{ item.name }}</h2>
