@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'src/app/electron.service';
 import { MediaModel } from 'src/models/media.service';
+import browserDataMedia from './browser-data/media';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,11 @@ export class MediaService {
 
   async getMedia(filters: { genreId?: number, artistId?: number } = {}): Promise<MediaModel[]> {
     return new Promise((resolve, reject) => {
+      if (!this.electron.isElectronApp) {
+        // Browser App
+        return resolve(this.mediaModel.newFromArray(browserDataMedia));
+      }
+
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
 
       this.electron.ipcRenderer.send('get-media', filters);
