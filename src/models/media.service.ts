@@ -17,7 +17,7 @@ export class MediaModel {
   imageUrl: string;
 
   constructor(private electron: ElectronService) {
-    this.imageUrl = this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/genre-images/${this.id}.${this.imageExt}` : '/assets/images/no-image.png';
+    this.imageUrl = this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/media-images/${this.id}.${this.imageExt}` : '/assets/images/no-image-equalizer.gif';
   }
 
   new() {
