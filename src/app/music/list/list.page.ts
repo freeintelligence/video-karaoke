@@ -77,9 +77,9 @@ export class ListPage implements OnInit {
     return true;
   }
 
-  async loadMedia(genreId?: number, artistId?: number) {
+  async loadMedia() {
     this.mediaLoading = true;
-    this.mediaList = await this.mediaService.getMedia({ genreId, artistId });
+    this.mediaList = await this.mediaService.getMedia({ genreId: this.getCurrentGenre() ? this.getCurrentGenre().id : null, artistId: this.getCurrentArtist() ? this.getCurrentArtist().id : null });
     this.mediaLoading = false;
     this.mediaCurrentIndex = this.mediaList.length ? 0 : undefined;
 
