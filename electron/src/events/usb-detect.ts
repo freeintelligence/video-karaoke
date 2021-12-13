@@ -1,4 +1,5 @@
 import { startMonitoring, on, Device, find } from 'usb-detection';
+import * as drivelist from 'drivelist';
 
 export class UsbDetectEvents {
 
@@ -9,8 +10,10 @@ export class UsbDetectEvents {
     async run() {
         startMonitoring();
 
-        on('add', (device) => {
-            console.log('device add', device);
+        on('change', async (device) => {
+            setTimeout(async () => {
+                const devices = await drivelist.list();
+            }, 1000);
         });
     }
 
