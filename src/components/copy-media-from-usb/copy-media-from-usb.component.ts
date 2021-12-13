@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
 
 @Component({
   selector: 'app-copy-media-from-usb',
@@ -7,10 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CopyMediaFromUsbComponent implements OnInit {
 
+  loadingFiles: boolean;
   totalFiles: number;
+  copiedFiles: number;
+  filesData: UsbFile[] = [];
 
-  constructor() { }
+  constructor(private usbDevicesService: UsbDevicesService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getFiles();
+  }
+
+  async getFiles() {
+    this.loadingFiles = true;
+    this.filesData = await this.usbDevicesService.getFiles();
+    this.loadingFiles = false;
+  }
 
 }

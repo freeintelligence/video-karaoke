@@ -5,14 +5,18 @@
 </ion-header>
 
 <ion-content>
-  <div class="preloading-media-count">
+  <div class="preloading-media-count" *ngIf="loadingFiles">
     <ion-spinner></ion-spinner>
+  </div>
+
+  <div class="list-files" *ngIf="!loadingFiles">
+    
   </div>
 </ion-content>
 
 <ion-footer>
 
   <ion-toolbar>
-    <ion-title>Copiados: 0 / {{ totalFiles ? totalFiles : '?' }} <ion-icon name="cloud-upload" class="icon-to-right"></ion-icon></ion-title>
+    <ion-title>Copiados: {{ copiedFiles ? copiedFiles : '0' }} / {{ totalFiles ? totalFiles : '?' }} <ion-icon name="cloud-upload" class="icon-to-right"></ion-icon></ion-title>
   </ion-toolbar>
 </ion-footer>
