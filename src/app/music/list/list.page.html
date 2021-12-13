@@ -62,7 +62,7 @@
         <ion-card-content>
           <div class="spinner-load-data" *ngIf="mediaLoading"><ion-spinner></ion-spinner></div>
 
-          <cdk-virtual-scroll-viewport itemSize="67" minBufferPx="900" maxBufferPx="1336" #virtualScrollMedia *ngIf="!mediaLoading">
+          <cdk-virtual-scroll-viewport itemSize="72" minBufferPx="900" maxBufferPx="1336" #virtualScrollMedia *ngIf="!mediaLoading">
             <ion-list>
               <ion-item *cdkVirtualFor="let item of mediaList; let index = index;" button detail="true" [color]="getItemColor(index, 'media')">
                 <ion-icon name="play" slot="start"></ion-icon>

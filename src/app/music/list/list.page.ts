@@ -135,13 +135,22 @@ export class ListPage implements OnInit {
       // Down
       if (this.actualTab === 'genre') {
         this.genreCurrentIndex = this.genreCurrentIndex + 1 >= this.genreList.length ? 0 : this.genreCurrentIndex + 1;
-        this.virtualScrollGenre.scrollToIndex(this.genreCurrentIndex, 'smooth');
+        const totalHeight = document.querySelector('.genre-list ion-card-content').clientHeight;
+        const itemHeight = document.querySelector('.genre-list ion-card-content cdk-virtual-scroll-viewport').getAttribute('itemSize');
+        const minus = Math.round(totalHeight / Number(itemHeight)) / 2;
+        this.virtualScrollGenre.scrollToIndex(this.genreCurrentIndex - minus + 1, 'smooth');
       } else if (this.actualTab === 'artist') {
         this.artistCurrentIndex = this.artistCurrentIndex + 1 >= this.artistList.length ? 0 : this.artistCurrentIndex + 1;
-        this.virtualScrollArtist.scrollToIndex(this.artistCurrentIndex, 'smooth');
+        const totalHeight = document.querySelector('.artist-list ion-card-content').clientHeight;
+        const itemHeight = document.querySelector('.artist-list ion-card-content cdk-virtual-scroll-viewport').getAttribute('itemSize');
+        const minus = Math.round(totalHeight / Number(itemHeight)) / 2;
+        this.virtualScrollArtist.scrollToIndex(this.artistCurrentIndex - minus + 1, 'smooth');
       } else if (this.actualTab === 'media') {
         this.mediaCurrentIndex = this.mediaCurrentIndex + 1 >= this.mediaList.length ? 0 : this.mediaCurrentIndex + 1;
-        this.virtualScrollMedia.scrollToIndex(this.mediaCurrentIndex, 'smooth');
+        const totalHeight = document.querySelector('.songs-list ion-card-content').clientHeight;
+        const itemHeight = document.querySelector('.songs-list ion-card-content cdk-virtual-scroll-viewport').getAttribute('itemSize');
+        const minus = Math.round(totalHeight / Number(itemHeight)) / 2;
+        this.virtualScrollMedia.scrollToIndex(this.mediaCurrentIndex - minus + 1, 'smooth');
       }
     } else if (event.code === this.configService.lastConfig.buttonLeft) {
       // Left

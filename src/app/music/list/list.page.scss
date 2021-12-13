@@ -47,6 +47,7 @@ ion-list {
                 overflow: auto;
 
                 ion-item {
+                    height: 72px;
                     background-color: rgba(0, 0, 0, 0.2);
                     color: #a0a0a0;
                     --color-hover: white;
