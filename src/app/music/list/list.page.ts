@@ -43,10 +43,10 @@ export class ListPage implements OnInit {
   }
 
   async run() {
-    await this.loadGenres(true);
+    await this.loadGenres();
   }
 
-  async loadGenres(firstLoad: boolean = false) {
+  async loadGenres() {
     if (!this.configService.lastConfig.genreSearch) {
       return false;
     }
@@ -54,26 +54,25 @@ export class ListPage implements OnInit {
     this.genreLoading = true;
     this.genreList = this.injectNull(await this.genreService.getGenres());
     this.genreLoading = false;
-
     this.genreCurrentIndex = this.genreList.length ? 0 : undefined;
 
-    if (firstLoad) {
-      await this.setTab('genre', firstLoad);
-    }
+    await this.loadArtists();
+    await this.setTab('media');
 
     return true;
   }
 
-  async loadArtists(genreId?: number) {
+  async loadArtists() {
     if (!this.configService.lastConfig.artistSearch) {
       return false;
     }
 
     this.artistLoading = true;
-    this.artistList = this.injectNull(await this.artistService.getArtists({ genreId }));
+    this.artistList = this.injectNull(await this.artistService.getArtists({ genreId: this.getCurrentGenre() ? this.getCurrentGenre().id : null }));
     this.artistLoading = false;
-
     this.artistCurrentIndex = this.artistList.length ? 0 : undefined;
+
+    await this.loadMedia();
 
     return true;
   }
@@ -82,35 +81,13 @@ export class ListPage implements OnInit {
     this.mediaLoading = true;
     this.mediaList = await this.mediaService.getMedia({ genreId, artistId });
     this.mediaLoading = false;
-
     this.mediaCurrentIndex = this.mediaList.length ? 0 : undefined;
 
     return true;
   }
 
-  async setTab(newTab: typeTabs['tabs'], firstLoad: boolean = false) {
+  async setTab(newTab: typeTabs['tabs']) {
     this.actualTab = newTab;
-
-    switch (this.actualTab) {
-      case 'genre': {
-        if (firstLoad) {
-          await this.loadArtists();
-          this.setTab('artist', firstLoad);
-        }
-        break;
-      }
-      case 'artist': {
-        if (firstLoad) {
-          await this.loadMedia();
-          this.setTab('media', firstLoad);
-        }
-      }
-      case 'media': {
-        if (firstLoad) {
-
-        }
-      }
-    }
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -182,6 +159,22 @@ export class ListPage implements OnInit {
     } else if (event.code === this.configService.lastConfig.buttonEnter) {
       
     }
+  }
+
+  getCurrentGenre(): GenreModel {
+    if (typeof this.genreCurrentIndex !== 'number') {
+      return null;
+    }
+
+    return this.genreList[this.genreCurrentIndex];
+  }
+
+  getCurrentArtist(): ArtistModel {
+    if (typeof this.artistCurrentIndex !== 'number') {
+      return null;
+    }
+
+    return this.artistList[this.artistCurrentIndex];
   }
 
   getCurrentMedia(): MediaModel {
