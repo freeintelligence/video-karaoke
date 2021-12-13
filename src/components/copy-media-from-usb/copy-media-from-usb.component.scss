@@ -15,3 +15,17 @@ ion-title {
         margin-top: -37px;
     }
 }
+
+.list-files {
+    position: relative;
+    height: 100%;
+
+    cdk-virtual-scroll-viewport {
+        height: 100%;
+    }
+
+    cdk-virtual-scroll-viewport::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
+    }
+}

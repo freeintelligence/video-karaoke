@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DisableScrollKeysService } from 'src/services/disable-scroll-keys.service';
 import { CopyMediaFromUsbComponent } from 'src/components/copy-media-from-usb/copy-media-from-usb.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [AppComponent, CopyMediaFromUsbComponent],
@@ -14,6 +15,7 @@ import { CopyMediaFromUsbComponent } from 'src/components/copy-media-from-usb/co
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    ScrollingModule,
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

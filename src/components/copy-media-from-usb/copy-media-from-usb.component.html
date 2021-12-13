@@ -10,12 +10,21 @@
   </div>
 
   <div class="list-files" *ngIf="!loadingFiles">
-    
+    <cdk-virtual-scroll-viewport itemSize="72" minBufferPx="900" maxBufferPx="1336" #virtualScrollFiles>
+      <ion-list>
+        <ion-item *cdkVirtualFor="let item of filesData; let index = index;" button>
+          <ion-icon name="play" slot="start"></ion-icon>
+          <ion-label>
+            <h2>{{ item.name }}</h2>
+            <p>Duración: 02:42 minutos</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </cdk-virtual-scroll-viewport>
   </div>
 </ion-content>
 
 <ion-footer>
-
   <ion-toolbar>
     <ion-title>Copiados: {{ copiedFiles ? copiedFiles : '0' }} / {{ totalFiles ? totalFiles : '?' }} <ion-icon name="cloud-upload" class="icon-to-right"></ion-icon></ion-title>
   </ion-toolbar>
