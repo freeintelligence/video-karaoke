@@ -184,6 +184,14 @@ export class ListPage implements OnInit {
     }
   }
 
+  getCurrentMedia(): MediaModel {
+    if (typeof this.mediaCurrentIndex !== 'number') {
+      return null;
+    }
+
+    return this.mediaList[this.mediaCurrentIndex];
+  }
+
   injectNull(arr: any[], every: number = 6): any[] {
     const result = [];
     const add = () => result.push({ name: 'Todos', imageUrl: '/assets/images/check-all.png' });

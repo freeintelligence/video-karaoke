@@ -80,7 +80,7 @@
     <div class="list-items-container mini-play">
       <ion-card color="dark" style="background-color: transparent;">
         <ion-card-content>
-          <div class="mini-previous bg-card-05"><div class="mini-video"></div></div>
+          <div class="mini-previous bg-card-05"><div class="mini-video" [style.backgroundImage]="getCurrentMedia() ? 'url(' + getCurrentMedia().imageUrl + ')' : '/assets/images/no-image-equalizer.gif'"></div></div>
 
           <div class="mini-sep"></div>
 
@@ -88,7 +88,7 @@
 
           <div class="mini-sep"></div>
 
-          <div class="mini-title bg-card-05">Smells Like Teen Spirit (Official Music Video)</div>
+          <div class="mini-title bg-card-05">{{ getCurrentMedia() ? getCurrentMedia().name : 'Cargando..' }}</div>
         </ion-card-content>
       </ion-card>
     </div>
