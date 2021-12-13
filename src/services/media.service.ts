@@ -14,7 +14,12 @@ export class MediaService {
     return new Promise((resolve, reject) => {
       if (!this.electron.isElectronApp) {
         // Browser App
-        return resolve(this.mediaModel.newFromArray(browserDataMedia));
+        return resolve(this.mediaModel.newFromArray(browserDataMedia.filter(value => {
+          if (filters.artistId) {
+            return value.artistId === filters.artistId;
+          }
+          return true;
+        })));
       }
 
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
