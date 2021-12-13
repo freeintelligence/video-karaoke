@@ -25,4 +25,14 @@ export class CopyMediaFromUsbComponent implements OnInit {
     this.loadingFiles = false;
   }
 
+  getItemColor(item: UsbFile) {
+    if (item.additional.status === 'uploaded') {
+      return 'success';
+    } else if (item.additional.status === 'uploading') {
+      return 'primary';
+    } else {
+      return null;
+    }
+  }
+
 }
