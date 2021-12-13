@@ -60,6 +60,11 @@
         </ion-card-header>
   
         <ion-card-content>
+          <div class="media-not-found" *ngIf="!mediaList.length">
+            <p>No se encontraron videos o audios</p>
+            <ion-icon name="alert-circle-outline" color="warning"></ion-icon>
+          </div>
+
           <div class="spinner-load-data" *ngIf="mediaLoading"><ion-spinner></ion-spinner></div>
 
           <cdk-virtual-scroll-viewport itemSize="72" minBufferPx="900" maxBufferPx="1336" #virtualScrollMedia *ngIf="!mediaLoading">

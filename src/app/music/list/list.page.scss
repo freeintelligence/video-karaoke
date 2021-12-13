@@ -122,6 +122,22 @@ ion-list {
 .songs-list {
     width: calc(100% - 140px - 332px - 448px);
     transition: .2s all;
+
+    .media-not-found {
+        margin: 32px;
+        text-transform: uppercase;
+        text-align: center;
+        color: #b2b8c3;
+        
+        p {
+            font-size: 21px;
+        }
+
+        ion-icon {
+            width: 64px;
+            height: 64px;
+        }
+    }
 }
 
 .songs-list.actual {
