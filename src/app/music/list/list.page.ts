@@ -104,6 +104,7 @@ export class ListPage implements OnInit {
         const itemHeight = document.querySelector('.genre-list ion-card-content cdk-virtual-scroll-viewport').getAttribute('itemSize');
         const minus = Math.round(totalHeight / Number(itemHeight)) / 2;
         this.virtualScrollGenre.scrollToIndex(this.genreCurrentIndex - minus + 1, 'smooth');
+        this.loadArtists();
       } else if (this.actualTab === 'artist') {
         this.artistCurrentIndex = this.artistCurrentIndex - 1 < 0 ? this.artistList.length - 1 : this.artistCurrentIndex - 1;
         const totalHeight = document.querySelector('.artist-list ion-card-content').clientHeight;
@@ -125,6 +126,7 @@ export class ListPage implements OnInit {
         const itemHeight = document.querySelector('.genre-list ion-card-content cdk-virtual-scroll-viewport').getAttribute('itemSize');
         const minus = Math.round(totalHeight / Number(itemHeight)) / 2;
         this.virtualScrollGenre.scrollToIndex(this.genreCurrentIndex - minus + 1, 'smooth');
+        this.loadArtists();
       } else if (this.actualTab === 'artist') {
         this.artistCurrentIndex = this.artistCurrentIndex + 1 >= this.artistList.length ? 0 : this.artistCurrentIndex + 1;
         const totalHeight = document.querySelector('.artist-list ion-card-content').clientHeight;
