@@ -6,5 +6,6 @@ export default Array.from(Array(rand(1000, 2000))).map((val, index) => ({
     artistName: 'Artista #' + rand(0, 10000),
     path: 'C:/',
     durationInSeconds: rand(60, 300),
+    exists: rand(0, 100) > 2,
     additional: {},
 }));

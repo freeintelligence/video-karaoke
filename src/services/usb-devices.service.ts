@@ -10,6 +10,7 @@ export interface UsbFile {
   artistName: string;
   path: string;
   durationInSeconds: number;
+  exists: boolean;
   additional: any;
 }
 
