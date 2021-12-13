@@ -1,4 +1,4 @@
-import * as usbDetect from 'usb-detection';
+import { startMonitoring, on, Device, find } from 'usb-detection';
 
 export class UsbDetectEvents {
 
@@ -7,10 +7,10 @@ export class UsbDetectEvents {
     }
 
     async run() {
-        console.log('run', usbDetect);
-        usbDetect.startMonitoring();
-        usbDetect.on('change', (device: usbDetect.Device) => {
-            console.log('device', device);
+        startMonitoring();
+
+        on('add', (device) => {
+            console.log('device add', device);
         });
     }
 
