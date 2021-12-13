@@ -14,7 +14,12 @@ export class ArtistService {
     return new Promise((resolve, reject) => {
       if (!this.electron.isElectronApp) {
         // Browser App
-        return resolve(this.artistModel.newFromArray(browserDataArtist));
+        return resolve(this.artistModel.newFromArray(browserDataArtist.filter(value => {
+          if (filters.genreId) {
+            return value.genreId === filters.genreId;
+          }
+          return true;
+        })));
       }
 
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
