@@ -1,0 +1,17 @@
+ion-title {
+    .icon-to-right {
+        float: right;
+    }
+}
+
+.preloading-media-count {
+    ion-spinner {
+        position: absolute;
+        left: 50%;
+        width: 74px;
+        margin-left: -37px;
+        top: 50%;
+        height: 74px;
+        margin-top: -37px;
+    }
+}

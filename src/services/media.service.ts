@@ -8,11 +8,7 @@ import browserDataMedia from './browser-data/media';
 })
 export class MediaService {
 
-  constructor(private electron: ElectronService, private mediaModel: MediaModel) {
-    this.electron.ipcRenderer.on('detected-devices', (event, devices) => {
-      console.log('devices', devices);
-    });
-  }
+  constructor(private electron: ElectronService, private mediaModel: MediaModel) { }
 
   async getMedia(filters: { genreId?: number, artistId?: number } = {}): Promise<MediaModel[]> {
     return new Promise((resolve, reject) => {
