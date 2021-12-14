@@ -18,6 +18,10 @@
             <h2>{{ item.name }}</h2>
             <p>Duración: 02:42 minutos</p>
           </ion-label>
+          <ion-spinner slot="end" *ngIf="item.additional.status === 'uploading'"></ion-spinner>
+          <ion-icon name="close-circle" slot="end" *ngIf="item.additional.status === 'error'"></ion-icon>
+          <ion-icon name="checkmark-circle" slot="end" *ngIf="item.additional.status === 'uploaded'"></ion-icon>
+          <ion-icon name="hourglass-outline" slot="end" *ngIf="!item.additional.status"></ion-icon>
         </ion-item>
       </ion-list>
     </cdk-virtual-scroll-viewport>
