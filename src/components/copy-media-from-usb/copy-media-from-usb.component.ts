@@ -1,6 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AlertController, ModalController } from '@ionic/angular';
 import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
 
 @Component({
@@ -17,7 +17,9 @@ export class CopyMediaFromUsbComponent implements OnInit {
   copiedFiles: number;
   filesData: UsbFile[] = [];
 
-  constructor(private usbDevicesService: UsbDevicesService, private alertController: AlertController) { }
+  completeAlert: HTMLIonAlertElement;
+
+  constructor(private usbDevicesService: UsbDevicesService, private alertController: AlertController, private modalController: ModalController) { }
 
   ngOnInit() {
     this.getFiles();
@@ -77,7 +79,7 @@ export class CopyMediaFromUsbComponent implements OnInit {
 
     info += '<br><center><strong>PRESIONA CUALQUIER TECLA PARA CERRAR EL DIALOGO</strong></center>';
 
-    const alert = await this.alertController.create({
+    this.completeAlert = await this.alertController.create({
       header: 'Copiado completo',
       subHeader: 'Resumen',
       message: info,
@@ -87,7 +89,17 @@ export class CopyMediaFromUsbComponent implements OnInit {
       //buttons: [ 'Cerrar' ],
     });
     
-    await alert.present();
+    await this.completeAlert.present();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  async handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.completeAlert) {
+      await this.completeAlert.dismiss();
+      await this.modalController.dismiss();
+
+      this.completeAlert = undefined;
+    }
   }
 
   getItemColor(item: UsbFile) {
