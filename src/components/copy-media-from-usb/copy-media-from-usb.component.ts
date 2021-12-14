@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
 
 @Component({
@@ -7,6 +8,8 @@ import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
   styleUrls: ['./copy-media-from-usb.component.scss'],
 })
 export class CopyMediaFromUsbComponent implements OnInit {
+
+  @ViewChild('virtualScrollFiles') virtualScrollFiles: CdkVirtualScrollViewport;
 
   loadingFiles: boolean;
   totalFiles: number;
@@ -31,6 +34,13 @@ export class CopyMediaFromUsbComponent implements OnInit {
     for (let i = 0; i < this.filesData.length; i++) {
       try {
         this.filesData[i].additional.status = 'uploading';
+        if (this.virtualScrollFiles) {
+          const totalHeight = document.querySelector('.list-files').clientHeight;
+          const itemHeight = document.querySelector('.list-files cdk-virtual-scroll-viewport').getAttribute('itemSize');
+          const minus = Math.round(totalHeight / Number(itemHeight)) / 2;
+          this.virtualScrollFiles.scrollToIndex(i - minus + 1, 'smooth');
+        }
+
         const result = await this.usbDevicesService.copyFileToStorage(this.filesData[i].path);
 
         if (result.error) {
