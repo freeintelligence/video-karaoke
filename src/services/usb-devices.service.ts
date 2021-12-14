@@ -80,7 +80,7 @@ export class UsbDevicesService {
     return new Promise((resolve, reject) => {
       if (!this.electron.isElectronApp) {
         // Browser App
-        return reject(browserDataUsbFiles);
+        return resolve(browserDataUsbFiles);
       }
 
       const timeout = setTimeout(() => reject(new Error('timeout')), 60*5*1000);
