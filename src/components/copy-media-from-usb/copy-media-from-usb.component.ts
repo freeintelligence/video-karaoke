@@ -30,6 +30,8 @@ export class CopyMediaFromUsbComponent implements OnInit {
       return 'success';
     } else if (item.additional.status === 'uploading') {
       return 'primary';
+    } else if (item.additional.status === 'error') {
+      return 'danger';
     } else {
       return null;
     }
