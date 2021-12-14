@@ -8,15 +8,15 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="loadingError">
+  <ng-container *ngIf="loadingError">
     <div class="loading-files-error">
       <p>¡Error al cargar los archivos desde el dispositivo USB!</p>
       <ion-icon name="close-circle" color="danger"></ion-icon>
       <p>Presiona cualquier tecla para cerrar este diálogo.</p>
     </div>
-  </div>
+  </ng-container>
 
-  <div *ngIf="!loadingError">
+  <ng-container *ngIf="!loadingError">
     <div class="preloading-media-count" *ngIf="loadingFiles">
       <ion-spinner></ion-spinner>
     </div>
@@ -43,7 +43,7 @@
         </ion-list>
       </cdk-virtual-scroll-viewport>
     </div>
-  </div>
+  </ng-container>
 </ion-content>
 
 <ion-footer>
