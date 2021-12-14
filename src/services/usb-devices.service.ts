@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { ElectronService } from 'src/app/electron.service';
 import { CopyMediaFromUsbComponent } from 'src/components/copy-media-from-usb/copy-media-from-usb.component';
 import browserDataUsbFiles from './browser-data/usb-files';
+import { rand } from './browser-data/usb-files';
 
 export interface UsbFile {
   name: string;
@@ -10,7 +11,6 @@ export interface UsbFile {
   artistName: string;
   path: string;
   durationInSeconds: number;
-  exists: boolean;
   additional: any;
 }
 
@@ -59,6 +59,28 @@ export class UsbDevicesService {
 
       this.electron.ipcRenderer.send('get-usb-files');
       this.electron.ipcRenderer.once('getting-usb-files', (event, result: UsbFile[]) => {
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+        return resolve(result);
+      });
+    });
+  }
+
+  async copyFileToStorage(filePath: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!this.electron.isElectronApp) {
+        // Browser App
+        return setTimeout(() => resolve({
+          error: rand(0, 100) < 10,
+          errorText: rand(0, 1) ? 'Ya existe' : (rand(0, 1) ? 'No compatible' : (rand(0, 1) ? 'Archivo eliminado' : 'Error desconocido!')),
+        }), 3000);
+      }
+
+      const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
+
+      this.electron.ipcRenderer.send('copy-usb-file', filePath);
+      this.electron.ipcRenderer.once('copied-usb-file', (event, result) => {
         if (timeout) {
           clearTimeout(timeout);
         }

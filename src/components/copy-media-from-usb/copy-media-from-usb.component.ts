@@ -23,6 +23,27 @@ export class CopyMediaFromUsbComponent implements OnInit {
     this.loadingFiles = true;
     this.filesData = await this.usbDevicesService.getFiles();
     this.loadingFiles = false;
+
+    await this.startCopyFiles();
+  }
+
+  async startCopyFiles() {
+    for (let i = 0; i < this.filesData.length; i++) {
+      try {
+        this.filesData[i].additional.status = 'uploading';
+        const result = await this.usbDevicesService.copyFileToStorage(this.filesData[i].path);
+
+        if (result.error) {
+          this.filesData[i].additional.status = 'error';
+          this.filesData[i].additional.errorText = result.errorText;
+        } else {
+          this.filesData[i].additional.status = 'uploaded';
+        }
+      } catch (err) {
+        this.filesData[i].additional.status = 'error';
+        this.filesData[i].additional.errorText = 'Error desconocido!';
+      }
+    }
   }
 
   getItemColor(item: UsbFile) {
