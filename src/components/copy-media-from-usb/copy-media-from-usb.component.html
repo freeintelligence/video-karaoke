@@ -10,7 +10,7 @@
   </div>
 
   <div class="list-files" *ngIf="!loadingFiles">
-    <cdk-virtual-scroll-viewport itemSize="72" minBufferPx="900" maxBufferPx="1336" #virtualScrollFiles>
+    <cdk-virtual-scroll-viewport itemSize="67" minBufferPx="900" maxBufferPx="1336" #virtualScrollFiles>
       <ion-list>
         <ion-item *cdkVirtualFor="let item of filesData; let index = index;" button [color]="getItemColor(item)">
           <ion-icon name="play" slot="start"></ion-icon>
