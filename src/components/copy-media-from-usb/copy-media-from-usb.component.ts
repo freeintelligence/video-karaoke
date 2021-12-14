@@ -1,5 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
 
 @Component({
@@ -16,7 +17,7 @@ export class CopyMediaFromUsbComponent implements OnInit {
   copiedFiles: number;
   filesData: UsbFile[] = [];
 
-  constructor(private usbDevicesService: UsbDevicesService) { }
+  constructor(private usbDevicesService: UsbDevicesService, private alertController: AlertController) { }
 
   ngOnInit() {
     this.getFiles();
@@ -25,12 +26,15 @@ export class CopyMediaFromUsbComponent implements OnInit {
   async getFiles() {
     this.loadingFiles = true;
     this.filesData = await this.usbDevicesService.getFiles();
+    this.totalFiles = this.filesData.length;
     this.loadingFiles = false;
 
     await this.startCopyFiles();
   }
 
   async startCopyFiles() {
+    this.copiedFiles = 0;
+
     for (let i = 0; i < this.filesData.length; i++) {
       try {
         this.filesData[i].additional.status = 'uploading';
@@ -48,12 +52,42 @@ export class CopyMediaFromUsbComponent implements OnInit {
           this.filesData[i].additional.errorText = result.errorText;
         } else {
           this.filesData[i].additional.status = 'uploaded';
+          this.copiedFiles++;
         }
       } catch (err) {
         this.filesData[i].additional.status = 'error';
         this.filesData[i].additional.errorText = 'Error desconocido!';
       }
     }
+
+    await this.openAlertCompleted();
+  }
+
+  async openAlertCompleted() {
+    let info = '', uploadCount = 0, errorCount = {};
+
+    this.filesData.forEach(file => file.additional.status === 'uploaded' ? ++uploadCount : null);
+    info += 'Copiados exitosamente: <strong>' + uploadCount + '</strong><br>';
+
+    this.filesData.forEach(file => file.additional.status === 'error' ? (errorCount[file.additional.errorText] = typeof errorCount[file.additional.errorText] === 'number' ? ++errorCount[file.additional.errorText] : 1) : null);
+    
+    for (let key in errorCount) {
+      info += key + ': <strong>' + errorCount[key] + '</strong><br>';
+    }
+
+    info += '<br><center><strong>PRESIONA CUALQUIER TECLA PARA CERRAR EL DIALOGO</strong></center>';
+
+    const alert = await this.alertController.create({
+      header: 'Copiado completo',
+      subHeader: 'Resumen',
+      message: info,
+      animated: true,
+      backdropDismiss: false,
+      keyboardClose: false,
+      //buttons: [ 'Cerrar' ],
+    });
+    
+    await alert.present();
   }
 
   getItemColor(item: UsbFile) {
