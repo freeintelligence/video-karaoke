@@ -68,4 +68,8 @@ export class CopyMediaFromUsbComponent implements OnInit {
     }
   }
 
+  toMinutes(seconds: number) {
+    return Math.round(seconds / 60).toString() + ':' + Math.round(seconds % 60).toString();
+  }
+
 }

@@ -16,7 +16,12 @@
           <ion-icon name="play" slot="start"></ion-icon>
           <ion-label>
             <h2>{{ item.name }}</h2>
-            <p>Duración: 02:42 minutos</p>
+            <p *ngIf="item.additional.status !== 'error'">
+              <ion-icon name="musical-notes"></ion-icon> {{ item.genreName ? item.genreName : 'Género desconocido' }}
+              <ion-icon name="accessibility"></ion-icon> {{ item.artistName ? item.artistName : 'Artista desconocido' }}
+              <ion-icon name="time"></ion-icon> {{ toMinutes(item.durationInSeconds) }}
+            </p>
+            <p *ngIf="item.additional.status === 'error'"><ion-icon name="warning-outline"></ion-icon> {{ item.additional.errorText }}</p>
           </ion-label>
           <ion-spinner slot="end" *ngIf="item.additional.status === 'uploading'"></ion-spinner>
           <ion-icon name="close-circle" slot="end" *ngIf="item.additional.status === 'error'"></ion-icon>
