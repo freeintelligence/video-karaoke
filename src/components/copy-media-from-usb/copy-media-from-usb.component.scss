@@ -16,6 +16,25 @@ ion-title {
     }
 }
 
+.loading-files-error {
+    height: 100%;
+    margin: 32px 64px;
+    text-align: center;
+
+    ion-icon {
+        height: 128px;
+        width: 128px;
+    }
+
+    p {
+        background-color: #eb445a;
+        border-radius: 12px;
+        color: white;
+        padding: 24px;
+        text-transform: uppercase;
+    }
+}
+
 .list-files {
     position: relative;
     height: 100%;

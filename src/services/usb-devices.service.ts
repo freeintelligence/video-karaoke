@@ -46,17 +46,6 @@ export class UsbDevicesService {
   async cancelMediaCopy() {
     this.isDetectChangeDevicesActive = false;
     await this.detectChangeDevicesModal.dismiss({ reason: 'cancel' });
-
-    const toast = await this.toastController.create({
-      header: 'Copia desde USB',
-      message: 'La copia de archivos desde dispositivos USB fue cancelada. Asegúrate de no desconectar el USB mientras se realiza la copia.',
-      animated: true,
-      duration: 6000,
-      keyboardClose: false,
-      position: 'bottom',
-      color: 'danger',
-    });
-    await toast.present();
   }
 
   async openMediaCopy() {
@@ -73,6 +62,17 @@ export class UsbDevicesService {
 
     if (data.reason === 'complete') {
       location.reload();
+    } else if (data.reason === 'cancel') {
+      const toast = await this.toastController.create({
+        header: 'Copia desde USB',
+        message: 'La copia de archivos desde dispositivos USB fue cancelada. Asegúrate de no desconectar el USB mientras se realiza el proceso.',
+        animated: true,
+        duration: 6000,
+        keyboardClose: false,
+        position: 'bottom',
+        color: 'danger',
+      });
+      await toast.present();
     }
   }
 
@@ -80,10 +80,10 @@ export class UsbDevicesService {
     return new Promise((resolve, reject) => {
       if (!this.electron.isElectronApp) {
         // Browser App
-        return resolve(browserDataUsbFiles);
+        return reject(browserDataUsbFiles);
       }
 
-      const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
+      const timeout = setTimeout(() => reject(new Error('timeout')), 60*5*1000);
 
       this.electron.ipcRenderer.send('get-usb-files');
       this.electron.ipcRenderer.once('getting-usb-files', (event, result: UsbFile[]) => {
@@ -105,7 +105,7 @@ export class UsbDevicesService {
         }), 200);
       }
 
-      const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
+      const timeout = setTimeout(() => reject(new Error('timeout')), 60*5*1000);
 
       this.electron.ipcRenderer.send('copy-usb-file', filePath);
       this.electron.ipcRenderer.once('copied-usb-file', (event, result) => {

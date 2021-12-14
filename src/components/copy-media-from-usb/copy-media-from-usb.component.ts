@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
 
@@ -12,6 +12,7 @@ export class CopyMediaFromUsbComponent implements OnInit {
 
   @ViewChild('virtualScrollFiles') virtualScrollFiles: CdkVirtualScrollViewport;
 
+  loadingError: boolean;
   loadingFiles: boolean;
   totalFiles: number;
   copiedFiles: number;
@@ -27,11 +28,17 @@ export class CopyMediaFromUsbComponent implements OnInit {
 
   async getFiles() {
     this.loadingFiles = true;
-    this.filesData = await this.usbDevicesService.getFiles();
-    this.totalFiles = this.filesData.length;
-    this.loadingFiles = false;
+    this.loadingError = false;
 
-    await this.startCopyFiles();
+    try {
+      this.filesData = await this.usbDevicesService.getFiles();
+      this.totalFiles = this.filesData.length;
+      this.loadingFiles = false;
+  
+      await this.startCopyFiles();
+    } catch (err) {
+      this.loadingError = true;
+    }
   }
 
   async startCopyFiles() {
@@ -99,6 +106,9 @@ export class CopyMediaFromUsbComponent implements OnInit {
       await this.modalController.dismiss({ reason: 'complete' });
 
       this.completeAlert = undefined;
+    }
+    if (this.loadingError) {
+      await this.modalController.dismiss({ reason: 'cancel' });
     }
   }
 

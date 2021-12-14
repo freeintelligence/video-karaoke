@@ -8,31 +8,41 @@
 </ion-header>
 
 <ion-content>
-  <div class="preloading-media-count" *ngIf="loadingFiles">
-    <ion-spinner></ion-spinner>
+  <div *ngIf="loadingError">
+    <div class="loading-files-error">
+      <p>¡Error al cargar los archivos desde el dispositivo USB!</p>
+      <ion-icon name="close-circle" color="danger"></ion-icon>
+      <p>Presiona cualquier tecla para cerrar este diálogo.</p>
+    </div>
   </div>
 
-  <div class="list-files" *ngIf="!loadingFiles">
-    <cdk-virtual-scroll-viewport itemSize="67" minBufferPx="900" maxBufferPx="1336" #virtualScrollFiles>
-      <ion-list>
-        <ion-item *cdkVirtualFor="let item of filesData; let index = index;" button [color]="getItemColor(item)">
-          <ion-icon name="play" slot="start"></ion-icon>
-          <ion-label>
-            <h2>{{ item.name }}</h2>
-            <p *ngIf="item.additional.status !== 'error'">
-              <ion-icon name="musical-notes"></ion-icon> {{ item.genreName ? item.genreName : 'Género desconocido' }}
-              <ion-icon name="accessibility"></ion-icon> {{ item.artistName ? item.artistName : 'Artista desconocido' }}
-              <ion-icon name="time"></ion-icon> {{ toMinutes(item.durationInSeconds) }}
-            </p>
-            <p *ngIf="item.additional.status === 'error'"><ion-icon name="warning-outline"></ion-icon> {{ item.additional.errorText }}</p>
-          </ion-label>
-          <ion-spinner slot="end" *ngIf="item.additional.status === 'uploading'"></ion-spinner>
-          <ion-icon name="close-circle" slot="end" *ngIf="item.additional.status === 'error'"></ion-icon>
-          <ion-icon name="checkmark-circle" slot="end" *ngIf="item.additional.status === 'uploaded'"></ion-icon>
-          <ion-icon name="hourglass-outline" slot="end" *ngIf="!item.additional.status"></ion-icon>
-        </ion-item>
-      </ion-list>
-    </cdk-virtual-scroll-viewport>
+  <div *ngIf="!loadingError">
+    <div class="preloading-media-count" *ngIf="loadingFiles">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <div class="list-files" *ngIf="!loadingFiles">
+      <cdk-virtual-scroll-viewport itemSize="67" minBufferPx="900" maxBufferPx="1336" #virtualScrollFiles>
+        <ion-list>
+          <ion-item *cdkVirtualFor="let item of filesData; let index = index;" button [color]="getItemColor(item)">
+            <ion-icon name="play" slot="start"></ion-icon>
+            <ion-label>
+              <h2>{{ item.name }}</h2>
+              <p *ngIf="item.additional.status !== 'error'">
+                <ion-icon name="musical-notes"></ion-icon> {{ item.genreName ? item.genreName : 'Género desconocido' }}
+                <ion-icon name="accessibility"></ion-icon> {{ item.artistName ? item.artistName : 'Artista desconocido' }}
+                <ion-icon name="time"></ion-icon> {{ toMinutes(item.durationInSeconds) }}
+              </p>
+              <p *ngIf="item.additional.status === 'error'"><ion-icon name="warning-outline"></ion-icon> {{ item.additional.errorText }}</p>
+            </ion-label>
+            <ion-spinner slot="end" *ngIf="item.additional.status === 'uploading'"></ion-spinner>
+            <ion-icon name="close-circle" slot="end" *ngIf="item.additional.status === 'error'"></ion-icon>
+            <ion-icon name="checkmark-circle" slot="end" *ngIf="item.additional.status === 'uploaded'"></ion-icon>
+            <ion-icon name="hourglass-outline" slot="end" *ngIf="!item.additional.status"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </cdk-virtual-scroll-viewport>
+    </div>
   </div>
 </ion-content>
 
