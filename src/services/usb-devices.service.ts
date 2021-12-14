@@ -67,7 +67,7 @@ export class UsbDevicesService {
     });
   }
 
-  async copyFileToStorage(filePath: string): Promise<any> {
+  async copyFileToStorage(filePath: string): Promise<{ error?: boolean, errorText?: string }> {
     return new Promise((resolve, reject) => {
       if (!this.electron.isElectronApp) {
         // Browser App
