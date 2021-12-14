@@ -45,7 +45,7 @@ export class UsbDevicesService {
 
   async cancelMediaCopy() {
     this.isDetectChangeDevicesActive = false;
-    await this.detectChangeDevicesModal.dismiss();
+    await this.detectChangeDevicesModal.dismiss({ reason: 'cancel' });
 
     const toast = await this.toastController.create({
       header: 'Copia desde USB',
@@ -69,6 +69,11 @@ export class UsbDevicesService {
     });
 
     await this.detectChangeDevicesModal.present();
+    const { data } = await this.detectChangeDevicesModal.onWillDismiss();
+
+    if (data.reason === 'complete') {
+      location.reload();
+    }
   }
 
   async getFiles(): Promise<UsbFile[]> {

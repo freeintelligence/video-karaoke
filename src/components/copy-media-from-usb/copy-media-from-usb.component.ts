@@ -96,7 +96,7 @@ export class CopyMediaFromUsbComponent implements OnInit {
   async handleKeyboardEvent(event: KeyboardEvent) {
     if (this.completeAlert) {
       await this.completeAlert.dismiss();
-      await this.modalController.dismiss();
+      await this.modalController.dismiss({ reason: 'complete' });
 
       this.completeAlert = undefined;
     }
