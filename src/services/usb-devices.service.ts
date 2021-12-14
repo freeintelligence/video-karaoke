@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { ElectronService } from 'src/app/electron.service';
 import { CopyMediaFromUsbComponent } from 'src/components/copy-media-from-usb/copy-media-from-usb.component';
 import browserDataUsbFiles from './browser-data/usb-files';
@@ -22,22 +22,45 @@ export class UsbDevicesService {
   isDetectChangeDevicesActive: boolean;
   detectChangeDevicesModal: HTMLIonModalElement;
 
-  constructor(private modalController: ModalController, private electron: ElectronService) { }
+  constructor(private modalController: ModalController, private electron: ElectronService, private toastController: ToastController) { }
 
   async onDetectChangeDevices() {
-    /*if (this.isDetectChangeDevicesActive) {
-      await this.cancelMediaCopy();
-    }*/
+    if (!this.electron.isElectronApp) {
+      setTimeout(async () => await this.run(), 1000);
+      return true;
+    }
 
-    await this.openMediaCopy();
+    this.electron.ipcRenderer.on('change-detected-devices', async (devices) => await this.run());
+
+    return true;
+  }
+
+  async run() {
+    if (this.isDetectChangeDevicesActive) {
+      await this.cancelMediaCopy();
+    } else {
+      await this.openMediaCopy();
+    }
   }
 
   async cancelMediaCopy() {
     this.isDetectChangeDevicesActive = false;
+    await this.detectChangeDevicesModal.dismiss();
+
+    const toast = await this.toastController.create({
+      header: 'Copia desde USB',
+      message: 'La copia de archivos desde dispositivos USB fue cancelada. Asegúrate de no desconectar el USB mientras se realiza la copia.',
+      animated: true,
+      duration: 6000,
+      keyboardClose: false,
+      position: 'bottom',
+      color: 'danger',
+    });
+    await toast.present();
   }
 
   async openMediaCopy() {
-    const modal = await this.modalController.create({
+    this.detectChangeDevicesModal = await this.modalController.create({
       component: CopyMediaFromUsbComponent,
       animated: true,
       backdropDismiss: false,
@@ -45,7 +68,7 @@ export class UsbDevicesService {
       showBackdrop: true,
     });
 
-    await modal.present();
+    await this.detectChangeDevicesModal.present();
   }
 
   async getFiles(): Promise<UsbFile[]> {
