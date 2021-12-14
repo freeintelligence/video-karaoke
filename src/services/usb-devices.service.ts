@@ -74,7 +74,7 @@ export class UsbDevicesService {
         return setTimeout(() => resolve({
           error: rand(0, 100) < 10,
           errorText: rand(0, 1) ? 'Ya existe' : (rand(0, 1) ? 'No compatible' : (rand(0, 1) ? 'Archivo eliminado' : 'Error desconocido!')),
-        }), 3000);
+        }), 200);
       }
 
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
