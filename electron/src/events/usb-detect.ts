@@ -27,6 +27,7 @@ export class UsbDetectEvents {
         startMonitoring();
         await this.onChange();
         await this.onGetUsbFiles();
+        await this.onCopyUsbFile();
     }
 
     async onChange() {
@@ -50,6 +51,16 @@ export class UsbDetectEvents {
                 event.reply('getting-usb-files', []);
             }
         })
+    }
+
+    async onCopyUsbFile() {
+        ipcMain.on('copy-usb-file', async (event: IpcMainEvent, usbFile: UsbFile) => {
+            try {
+                setTimeout(e => event.reply('copied-usb-file'), 3000);
+            } catch (err) {
+
+            }
+        });
     }
 
     async getUsbFiles() {

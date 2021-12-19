@@ -102,7 +102,7 @@ export class UsbDevicesService {
     });
   }
 
-  async copyFileToStorage(filePath: string): Promise<{ error?: boolean, errorText?: string }> {
+  async copyFileToStorage(usbFile: UsbFile): Promise<{ error?: boolean, errorText?: string }> {
     return new Promise((resolve, reject) => {
       if (!this.electron.isElectronApp) {
         // Browser App
@@ -114,8 +114,8 @@ export class UsbDevicesService {
 
       const timeout = setTimeout(() => reject(new Error('timeout')), 60*5*1000);
 
-      this.electron.ipcRenderer.send('copy-usb-file', filePath);
-      this.electron.ipcRenderer.once('copied-usb-file', (event, result) => {
+      this.electron.ipcRenderer.send('copy-usb-file', usbFile);
+      this.electron.ipcRenderer.once('copied-usb-file', (event, result: { error?: boolean, errorText?: string }) => {
         if (timeout) {
           clearTimeout(timeout);
         }

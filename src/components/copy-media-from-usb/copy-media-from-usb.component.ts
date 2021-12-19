@@ -54,7 +54,7 @@ export class CopyMediaFromUsbComponent implements OnInit {
           this.virtualScrollFiles.scrollToIndex(i - minus + 1, 'smooth');
         }
 
-        const result = await this.usbDevicesService.copyFileToStorage(this.filesData[i].path);
+        const result = await this.usbDevicesService.copyFileToStorage(this.filesData[i]);
 
         if (result.error) {
           this.filesData[i].additional.status = 'error';
