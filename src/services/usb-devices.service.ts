@@ -9,8 +9,9 @@ import { rand } from './browser-data/usb-files';
 
 export interface UsbFile {
   name: string;
-  genreName: string;
-  artistName: string;
+  mountpoint: string;
+  genreName?: string;
+  artistName?: string;
   path: string;
   durationInSeconds: number;
   additional: any;
