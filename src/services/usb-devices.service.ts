@@ -49,6 +49,7 @@ export class UsbDevicesService {
   }
 
   async openMediaCopy() {
+    this.isDetectChangeDevicesActive = true;
     this.detectChangeDevicesModal = await this.modalController.create({
       component: CopyMediaFromUsbComponent,
       animated: true,

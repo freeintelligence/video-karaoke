@@ -14,7 +14,7 @@ export class UsbDetectEvents {
         on('change', async (device) => {
             setTimeout(async () => {
                 const devices = await drivelist.list();
-                BrowserWindow.getFocusedWindow().webContents.send('detected-devices', devices)
+                BrowserWindow.getFocusedWindow().webContents.send('change-detected-devices', devices);
             }, 1000);
         });
     }
