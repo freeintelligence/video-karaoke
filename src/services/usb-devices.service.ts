@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
+import { Drive } from 'drivelist';
+import { IpcRendererEvent } from 'electron';
 import { ElectronService } from 'src/app/electron.service';
 import { CopyMediaFromUsbComponent } from 'src/components/copy-media-from-usb/copy-media-from-usb.component';
 import browserDataUsbFiles from './browser-data/usb-files';
@@ -30,15 +32,17 @@ export class UsbDevicesService {
       return true;
     }
 
-    this.electron.ipcRenderer.on('change-detected-devices', async (devices) => await this.run());
+    this.electron.ipcRenderer.on('change-detected-devices', async (event: IpcRendererEvent, devices: Drive[]) => await this.run(devices));
 
     return true;
   }
 
-  async run() {
-    if (this.isDetectChangeDevicesActive) {
+  async run(devices: Drive[] = []) {
+    const filtered = devices.filter(d => d.isRemovable);
+
+    if (this.isDetectChangeDevicesActive && !filtered.length) {
       await this.cancelMediaCopy();
-    } else {
+    } else if (!this.isDetectChangeDevicesActive && filtered.length) {
       await this.openMediaCopy();
     }
   }
