@@ -68,6 +68,7 @@ export class UsbDevicesService {
     if (data.reason === 'complete') {
       location.reload();
     } else if (data.reason === 'cancel') {
+      this.isDetectChangeDevicesActive = false;
       const toast = await this.toastController.create({
         header: 'Copia desde USB',
         message: 'La copia de archivos desde dispositivos USB fue cancelada. Asegúrate de no desconectar el USB mientras se realiza el proceso.',
