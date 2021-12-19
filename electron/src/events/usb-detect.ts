@@ -3,6 +3,7 @@ import * as drivelist from 'drivelist';
 import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
 import { getAllFiles } from 'get-all-files';
 import * as path from 'path';
+import { getVideoDurationInSeconds } from 'get-video-duration-electron';
 
 export interface UsbFile {
     name: string;
@@ -70,7 +71,7 @@ export class UsbDetectEvents {
                         additional: {},
                     };
 
-                    if (!this.isValidFile(data)) {
+                    if (!await this.isValidFile(data)) {
                         continue;
                     }
 
@@ -82,14 +83,32 @@ export class UsbDetectEvents {
         return files;
     }
 
-    isValidFile(usbFile: UsbFile) {
+    async isValidFile(usbFile: UsbFile) {
         const extname = path.extname(usbFile.path);
 
         if (!extname || !(extname.toLowerCase() === '.mp4' || extname.toLowerCase() === '.ogg' || extname.toLowerCase() === '.webm')) {
             return false;
         }
 
+        const pathArr = usbFile.path.replace(usbFile.mountpoint, '').split(path.sep).filter(e => e.length);
+        const pathIndex = pathArr.findIndex(e => e === usbFile.name);
+
+        usbFile.durationInSeconds = await getVideoDurationInSeconds(usbFile.path);
         usbFile.name = usbFile.name.replace(extname, '');
+
+        // Genre detector
+        if (pathArr.length >= 4 && pathArr.indexOf(UsbDetectEvents.DIRECTORIES.genres) !== -1) {
+            usbFile.genreName = pathArr.length === 5 ? pathArr[pathIndex-2] : pathArr[pathIndex-1];
+        }
+
+        // Artist detector
+        if (pathArr.length >= 4) {
+            if (pathArr.indexOf(UsbDetectEvents.DIRECTORIES.artists) !== -1) {
+                usbFile.artistName = pathArr[pathIndex-1];
+            } else if (pathArr.indexOf(UsbDetectEvents.DIRECTORIES.genres) !== -1) {
+                usbFile.artistName = pathArr.length >= 5 ? pathArr[pathIndex-1] : null;
+            }
+        }
 
         return true;
     }
