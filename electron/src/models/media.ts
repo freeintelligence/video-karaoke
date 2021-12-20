@@ -23,6 +23,7 @@ export class Media extends Model {
             fluentffmpeg({ source: this.getMediaPath() })
             .setStartTime(10)
             .setDuration(8)
+            .size('332x?')
             .output(this.getGifPath())
             .on('end', async (err) => {
                 if (err) {
