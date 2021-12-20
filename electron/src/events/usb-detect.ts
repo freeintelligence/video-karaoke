@@ -4,7 +4,6 @@ import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
 import { getAllFiles } from 'get-all-files';
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import { config } from './../config';
 import { getVideoDurationInSeconds } from 'get-video-duration-electron';
 import { Genre } from './../models/genre';
 import { Artist } from './../models/artist';
