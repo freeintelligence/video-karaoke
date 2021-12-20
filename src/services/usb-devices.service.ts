@@ -6,6 +6,7 @@ import { ElectronService } from 'src/app/electron.service';
 import { CopyMediaFromUsbComponent } from 'src/components/copy-media-from-usb/copy-media-from-usb.component';
 import browserDataUsbFiles from './browser-data/usb-files';
 import { rand } from './browser-data/usb-files';
+import { SharedDataService } from './shared-data.service';
 
 export interface UsbFile {
   name: string;
@@ -25,7 +26,7 @@ export class UsbDevicesService {
   isDetectChangeDevicesActive: boolean;
   detectChangeDevicesModal: HTMLIonModalElement;
 
-  constructor(private modalController: ModalController, private electron: ElectronService, private toastController: ToastController) { }
+  constructor(private modalController: ModalController, private electron: ElectronService, private toastController: ToastController, private sharedDataService: SharedDataService) { }
 
   async onDetectChangeDevices() {
     if (!this.electron.isElectronApp) {
@@ -41,7 +42,7 @@ export class UsbDevicesService {
   async run(devices: Drive[] = []) {
     const filtered = devices.filter(d => d.isRemovable);
 
-    if (this.isDetectChangeDevicesActive && !filtered.length) {
+    if (this.isDetectChangeDevicesActive && !filtered.length && !this.sharedDataService.copyMediaFromUsbModalData.completed) {
       await this.cancelMediaCopy();
     } else if (!this.isDetectChangeDevicesActive && filtered.length) {
       await this.openMediaCopy();

@@ -1,6 +1,7 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { AfterContentInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
+import { SharedDataService } from 'src/services/shared-data.service';
 import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
 
 @Component({
@@ -20,13 +21,15 @@ export class CopyMediaFromUsbComponent implements OnInit {
 
   completeAlert: HTMLIonAlertElement;
 
-  constructor(private usbDevicesService: UsbDevicesService, private alertController: AlertController, private modalController: ModalController) { }
+  constructor(private usbDevicesService: UsbDevicesService, private alertController: AlertController, private modalController: ModalController, private sharedDataService: SharedDataService) { }
 
   ngOnInit() {
     this.getFiles();
   }
 
   async getFiles() {
+    this.sharedDataService.copyMediaFromUsbModalData.completed = false;
+
     this.loadingFiles = true;
     this.loadingError = false;
 
@@ -75,6 +78,7 @@ export class CopyMediaFromUsbComponent implements OnInit {
   async openAlertCompleted() {
     let info = '', uploadCount = 0, errorCount = {};
 
+    this.sharedDataService.copyMediaFromUsbModalData.completed = true;
     this.filesData.forEach(file => file.additional.status === 'uploaded' ? ++uploadCount : null);
     info += 'Copiados exitosamente: <strong>' + uploadCount + '</strong><br>';
 
@@ -97,6 +101,12 @@ export class CopyMediaFromUsbComponent implements OnInit {
     });
     
     await this.completeAlert.present();
+
+    const { data } = await (await this.modalController.getTop()).onWillDismiss();
+
+    if (data.reason === 'complete') {
+      await this.completeAlert.dismiss();
+    }
   }
 
   @HostListener('document:keydown', ['$event'])
