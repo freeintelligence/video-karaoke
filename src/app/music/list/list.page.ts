@@ -191,7 +191,7 @@ export class ListPage implements OnInit {
 
   injectNull(arr: any[], every: number = 6): any[] {
     const result = [];
-    const add = () => result.push({ name: 'Todos', imageUrl: '/assets/images/check-all.png' });
+    const add = () => result.push({ name: 'Todos', imageUrl: () => '/assets/images/check-all.png' });
 
     if (!(arr instanceof Array)) {
       arr = [];

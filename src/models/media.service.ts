@@ -13,11 +13,10 @@ export class MediaModel {
   imageExt?: string;
   artistId?: number;
 
-  // Extra properties
-  imageUrl: string;
+  constructor(private electron: ElectronService) {}
 
-  constructor(private electron: ElectronService) {
-    this.imageUrl = this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/media-images/${this.id}.${this.imageExt}` : '/assets/images/no-image-equalizer.gif';
+  getImageUrl() {
+    return this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/media-images/${this.id}${this.imageExt}` : '/assets/images/no-image-equalizer.gif';
   }
 
   new() {
