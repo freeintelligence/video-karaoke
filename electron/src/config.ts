@@ -1,5 +1,6 @@
 import { app } from "electron";
 import * as path from 'path';
+import * as fs from 'fs-extra';
 
 export class Config {
 
@@ -8,11 +9,20 @@ export class Config {
   };
 
   constructor() {
-
+    fs.mkdirSync(this.databasePath(), { recursive: true });
+    fs.mkdirSync(this.mediaPath(), { recursive: true });
+    fs.mkdirSync(this.imagesPath(), { recursive: true });
+    fs.mkdirSync(this.genreImagesPath(), { recursive: true });
+    fs.mkdirSync(this.artistImagesPath(), { recursive: true });
+    fs.mkdirSync(this.mediaImagesPath(), { recursive: true });
   }
 
   databasePath(p: string = '') {
     return path.join(app.getPath('userData'), 'database', p);
+  }
+
+  mediaPath(p: string = '') {
+    return path.join(this.databasePath(), 'media', p);
   }
 
   imagesPath(p: string = '') {

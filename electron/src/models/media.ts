@@ -10,8 +10,13 @@ Media.init({
         type: DataTypes.STRING(256),
         allowNull: false,
     },
+    mediaExt: {
+        type: DataTypes.CHAR,
+        allowNull: false,
+    },
     imageExt: {
         type: DataTypes.CHAR,
         allowNull: true,
+        defaultValue: null,
     },
 }, { sequelize: Database, modelName: 'media' });

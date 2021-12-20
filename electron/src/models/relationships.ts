@@ -11,5 +11,5 @@ export const run = async () => {
   Media.belongsTo(Artist, { foreignKey: { field: 'artistId', allowNull: true, defaultValue: null }, as: 'artist' });
 
   //
-  await Database.sync();
+  await Database.sync({ force: true });
 }

@@ -13,5 +13,6 @@ Genre.init({
     imageExt: {
         type: DataTypes.CHAR,
         allowNull: true,
+        defaultValue: null,
     },
 }, { sequelize: Database, modelName: 'genre' });

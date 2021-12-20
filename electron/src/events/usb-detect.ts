@@ -3,7 +3,12 @@ import * as drivelist from 'drivelist';
 import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
 import { getAllFiles } from 'get-all-files';
 import * as path from 'path';
+import * as fs from 'fs-extra';
+import { config } from './../config';
 import { getVideoDurationInSeconds } from 'get-video-duration-electron';
+import { Genre } from './../models/genre';
+import { Artist } from './../models/artist';
+import { Media } from './../models/media';
 
 export interface UsbFile {
     name: string;
@@ -56,11 +61,45 @@ export class UsbDetectEvents {
     async onCopyUsbFile() {
         ipcMain.on('copy-usb-file', async (event: IpcMainEvent, usbFile: UsbFile) => {
             try {
-                setTimeout(e => event.reply('copied-usb-file'), 3000);
+                await this.copyUsbFile(usbFile);
+                event.reply('copied-usb-file', { error: false });
             } catch (err) {
-
+                event.reply('copied-usb-file', { error: err, errorText: err.message });
             }
         });
+    }
+
+    async copyUsbFile(usbFile: UsbFile) {
+        let genre: Genre, artist: Artist, media: Media;
+
+        if (typeof usbFile.genreName === 'string' && usbFile.genreName.length) {
+            const [ genreData ] = await Genre.findOrCreate({
+                where: { name: usbFile.genreName },
+                defaults: {
+                    name: usbFile.genreName,
+                }
+            });
+            genre = genreData;
+        }
+
+        if (typeof usbFile.artistName === 'string' && usbFile.artistName.length) {
+            const [ artistData ] = await Artist.findOrCreate({
+                where: { name: usbFile.artistName },
+                defaults: {
+                    name: usbFile.artistName,
+                    genreId: genre ? genre.get('id') : null,
+                }
+            });
+            artist = artistData;
+        }
+
+        media = await Media.create({
+            name: usbFile.name,
+            artistId: artist ? artist.get('id') : null,
+            mediaExt: path.extname(usbFile.path),
+        });
+
+        await fs.copyFile(usbFile.path, config.mediaPath(`${media.get('id')}${media.get('mediaExt')}`));
     }
 
     async getUsbFiles() {
