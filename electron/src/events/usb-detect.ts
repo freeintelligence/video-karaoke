@@ -72,6 +72,7 @@ export class UsbDetectEvents {
     async copyUsbFile(usbFile: UsbFile) {
         let genre: Genre, artist: Artist, media: Media;
 
+        // Find genre
         if (typeof usbFile.genreName === 'string' && usbFile.genreName.length) {
             const [ genreData ] = await Genre.findOrCreate({
                 where: { name: usbFile.genreName },
@@ -82,6 +83,7 @@ export class UsbDetectEvents {
             genre = genreData;
         }
 
+        // Find artist
         if (typeof usbFile.artistName === 'string' && usbFile.artistName.length) {
             const [ artistData ] = await Artist.findOrCreate({
                 where: { name: usbFile.artistName },
@@ -93,13 +95,36 @@ export class UsbDetectEvents {
             artist = artistData;
         }
 
+        // Find media (if exists)
+        if (await this.mediaAlreadyExists(usbFile, genre, artist)) {
+            throw new Error('Ya existe');
+        }
+
         media = await Media.create({
             name: usbFile.name,
             artistId: artist ? artist.get('id') : null,
             mediaExt: path.extname(usbFile.path),
         });
 
-        await fs.copyFile(usbFile.path, config.mediaPath(`${media.get('id')}${media.get('mediaExt')}`));
+        try {
+            await fs.copyFile(usbFile.path, config.mediaPath(`${media.get('id')}${media.get('mediaExt')}`));
+        } catch (err) {
+            if (media && media.get('id')) {
+                await media.destroy();
+            }
+            throw new Error('No se pudo copiar el archivo');
+        }
+    }
+
+    async mediaAlreadyExists(usbFile: UsbFile, genre: Genre, artist: Artist) {
+        const media = await Media.findOne({
+            where: {
+                name: usbFile.name,
+                artistId: artist ? artist.get('id') : null,
+            }
+        });
+
+        return media;
     }
 
     async getUsbFiles() {
