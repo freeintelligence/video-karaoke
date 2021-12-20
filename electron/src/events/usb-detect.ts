@@ -100,19 +100,21 @@ export class UsbDetectEvents {
             throw new Error('Ya existe');
         }
 
+        // Create media
         media = await Media.create({
             name: usbFile.name,
             artistId: artist ? artist.get('id') : null,
             mediaExt: path.extname(usbFile.path),
         });
 
+        // Try copy file
         try {
             await fs.copyFile(usbFile.path, config.mediaPath(`${media.get('id')}${media.get('mediaExt')}`));
         } catch (err) {
             if (media && media.get('id')) {
                 await media.destroy();
             }
-            throw new Error('No se pudo copiar el archivo');
+            throw new Error('Error desconocido');
         }
     }
 
