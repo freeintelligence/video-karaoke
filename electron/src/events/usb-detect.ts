@@ -38,7 +38,7 @@ export class UsbDetectEvents {
     async onChange() {
         on('change', async (device: Device) => {
             try {
-                await (() => new Promise<void>(resolve => setTimeout(() => resolve(), 1000)))();
+                await (() => new Promise<void>(resolve => setTimeout(() => resolve(), 3000)))();
                 const devices = await drivelist.list();
                 BrowserWindow.getFocusedWindow().webContents.send('change-detected-devices', devices);
             } catch (err) {
@@ -109,7 +109,8 @@ export class UsbDetectEvents {
 
         // Try copy file
         try {
-            await fs.copyFile(usbFile.path, config.mediaPath(`${media.get('id')}${media.get('mediaExt')}`));
+            await fs.copyFile(usbFile.path, media.getMediaPath());
+            await media.createGif();
         } catch (err) {
             if (media && media.get('id')) {
                 await media.destroy();
