@@ -1,5 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Router } from '@angular/router';
 import { AppUtils } from 'src/app/app.utils';
 import { ArtistModel } from 'src/models/artist.service';
 import { GenreModel } from 'src/models/genre.service';
@@ -40,9 +41,13 @@ export class ListPage implements OnInit {
 
   AppUtils = AppUtils;
   
-  constructor(private playMediaService: PlayMediaService, private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService, private usbDevicesService: UsbDevicesService) {}
+  constructor(private router: Router, private playMediaService: PlayMediaService, private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService, private usbDevicesService: UsbDevicesService) {}
+  
+  ngOnInit(): void {
 
-  ngOnInit() {
+  }
+
+  ionViewDidEnter() {
     this.run();
   }
 
@@ -106,6 +111,9 @@ export class ListPage implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.router.url !== '/music/list') {
+      return false;
+    }
     if (this.genreLoading || this.artistLoading || this.mediaLoading) {
       return false;
     }
@@ -181,7 +189,6 @@ export class ListPage implements OnInit {
         this.setTab('genre', 'right');
       }
     } else if (event.code === this.configService.lastConfig.buttonEnter) {
-      console.log('desde list page');
       const currentMedia = this.getCurrentMedia();
 
       if (!currentMedia) {
