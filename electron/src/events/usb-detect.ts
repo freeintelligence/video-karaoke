@@ -104,7 +104,7 @@ export class UsbDetectEvents {
             name: usbFile.name,
             artistId: artist ? artist.get('id') : null,
             mediaExt: path.extname(usbFile.path),
-            durationInSeconds: usbFile.durationInSeconds ? usbFile.durationInSeconds : 0,
+            durationInSeconds: usbFile.durationInSeconds ? Number(usbFile.durationInSeconds) : 0,
         });
 
         // Try copy file
