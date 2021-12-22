@@ -23,7 +23,7 @@ export class MediaModel {
   }
 
   getMediaUrl() {
-    return this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/media/${this.id}${this.imageExt}` : '/assets/videos/media-test.mp4';
+    return this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/media/${this.id}${this.mediaExt}` : '/assets/videos/media-test.mp4';
   }
 
   new() {
