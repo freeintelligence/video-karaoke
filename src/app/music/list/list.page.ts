@@ -181,6 +181,7 @@ export class ListPage implements OnInit {
         this.setTab('genre', 'right');
       }
     } else if (event.code === this.configService.lastConfig.buttonEnter) {
+      console.log('desde list page');
       const currentMedia = this.getCurrentMedia();
 
       if (!currentMedia) {

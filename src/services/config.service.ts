@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AppUtils } from 'src/app/app.utils';
 import { ElectronService } from 'src/app/electron.service';
 import browserDataConfig from './browser-data/config';
 
@@ -19,7 +20,7 @@ export class ConfigService {
       if (!this.electron.isElectronApp) {
         // Browser App
         this.lastConfig = browserDataConfig;
-        return resolve(browserDataConfig);
+        return resolve(this.lastConfig);
       }
 
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
@@ -30,13 +31,20 @@ export class ConfigService {
         if (timeout) {
           clearTimeout(timeout);
         }
-        return resolve(config);
+        return resolve(this.lastConfig);
       })
     });
   }
 
   async setConfig(config: any): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      if (!this.electron.isElectronApp) {
+        // Browser App
+        this.lastConfig = config;
+        AppUtils.replaceProperties(this.lastConfig, browserDataConfig);
+        return resolve(await this.getConfig());
+      }
+
       const timeout = setTimeout(() => reject(new Error('timeout')), 2000);
 
       this.electron.ipcRenderer.send('set-config', config);
