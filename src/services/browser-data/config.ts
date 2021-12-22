@@ -1,8 +1,8 @@
 export default {
     id: 1,
     firstConfig: true,
-    genreSearch: true,
-    artistSearch: true,
+    genreSearch: false,
+    artistSearch: false,
     buttonLeft: "ArrowLeft",
     buttonRight: "ArrowRight",
     buttonUp: "ArrowUp",

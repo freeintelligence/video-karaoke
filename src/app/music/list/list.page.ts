@@ -24,13 +24,13 @@ export class ListPage implements OnInit {
 
   actualTab: typeTabs['tabs'] = 'media';
 
-  genreLoading: boolean = true;
+  genreLoading: boolean = false;
   genreList: GenreModel[] = [];
   genreCurrentIndex: number;
-  artistLoading: boolean = true;
+  artistLoading: boolean = false;
   artistList: ArtistModel[] = [];
   artistCurrentIndex: number;
-  mediaLoading: boolean = true;
+  mediaLoading: boolean = false;
   mediaList: MediaModel[] = [];
   mediaCurrentIndex: number;
 
@@ -50,7 +50,7 @@ export class ListPage implements OnInit {
 
   async loadGenres() {
     if (!this.configService.lastConfig.genreSearch) {
-      return false;
+      return await this.loadArtists();
     }
 
     this.genreLoading = true;
@@ -59,14 +59,14 @@ export class ListPage implements OnInit {
     this.genreCurrentIndex = this.genreList.length ? 0 : undefined;
 
     await this.loadArtists();
-    await this.setTab('media');
+    await this.setTab('media', 'left');
 
     return true;
   }
 
   async loadArtists() {
     if (!this.configService.lastConfig.artistSearch) {
-      return false;
+      return await this.loadMedia();
     }
 
     this.artistLoading = true;
@@ -88,8 +88,18 @@ export class ListPage implements OnInit {
     return true;
   }
 
-  async setTab(newTab: typeTabs['tabs']) {
+  async setTab(newTab: typeTabs['tabs'], direction: 'left'|'right') {
     this.actualTab = newTab;
+
+    if (this.actualTab === 'genre' && !this.configService.lastConfig.genreSearch && direction === 'left') {
+      this.setTab('media', direction);
+    } else if (this.actualTab === 'genre' && !this.configService.lastConfig.genreSearch && direction === 'right') {
+      this.setTab('artist', direction);
+    } else if (this.actualTab === 'artist' && !this.configService.lastConfig.artistSearch && direction === 'left') {
+      this.setTab('genre', direction);
+    } else if (this.actualTab === 'artist' && !this.configService.lastConfig.artistSearch && direction === 'right') {
+      this.setTab('media', direction);
+    }
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -153,20 +163,20 @@ export class ListPage implements OnInit {
     } else if (event.code === this.configService.lastConfig.buttonLeft) {
       // Left
       if (this.actualTab === 'genre') {
-        this.setTab('media');
+        this.setTab('media', 'left');
       } else if (this.actualTab === 'artist') {
-        this.setTab('genre');
+        this.setTab('genre', 'left');
       } else if (this.actualTab === 'media') {
-        this.setTab('artist');
+        this.setTab('artist', 'left');
       }
     } else if (event.code === this.configService.lastConfig.buttonRight) {
       // Right
       if (this.actualTab === 'genre') {
-        this.setTab('artist');
+        this.setTab('artist', 'right');
       } else if (this.actualTab === 'artist') {
-        this.setTab('media');
+        this.setTab('media', 'right');
       } else if (this.actualTab === 'media') {
-        this.setTab('genre');
+        this.setTab('genre', 'right');
       }
     } else if (event.code === this.configService.lastConfig.buttonEnter) {
       const currentMedia = this.getCurrentMedia();
