@@ -244,4 +244,23 @@ export class ListPage implements OnInit {
     }
   }
 
+  getMediaContainerWidth() {
+    let px = 0, genreWidth = 140, genreActualWidth = 332, artistWidth = 140, artistActualWidth = 332, miniPlayWidth = 448;
+
+    // Genre list
+    if (this.configService.lastConfig.genreSearch) {
+      px += this.actualTab === 'genre' ? genreActualWidth : genreWidth;
+    }
+
+    // Artist list
+    if (this.configService.lastConfig.artistSearch) {
+      px += this.actualTab === 'artist' ? artistActualWidth : artistWidth;
+    }
+
+    // Miniplay
+    px += miniPlayWidth;
+
+    return `calc(100% - ${px}px)`;
+  }
+
 }

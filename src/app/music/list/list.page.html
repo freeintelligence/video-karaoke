@@ -51,7 +51,7 @@
       </ion-card>
     </div>
     
-    <div class="list-items-container songs-list" [class.actual]="actualTab === 'media'">
+    <div class="list-items-container songs-list" [class.actual]="actualTab === 'media'" [style.width]="getMediaContainerWidth()">
       <ion-card class="bg-card-05" color="dark">
         <ion-card-header>
           <ion-card-title>

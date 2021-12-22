@@ -1,3 +1,9 @@
+$genreWidth: 140px;
+$genreActualWidth: 332px;
+$artistWidth: 140px;
+$artistActualWidth: 332px;
+$miniPlayWidth: 448px;
+
 ion-content {
     --background: url('/assets/images/backgrounds/girl-singing.jpg') no-repeat center center / cover;
 }
@@ -63,27 +69,27 @@ ion-list {
 }
 
 .genre-list {
-    width: 140px;
+    width: $genreWidth;
     transition: .2s all;
 }
 
 .genre-list.actual {
-    width: 332px;
+    width: $genreActualWidth;
     transition: .2s all;
 }
 
 .artist-list {
-    width: 140px;
+    width: $artistWidth;
     transition: .2s all;
 }
 
 .artist-list.actual {
-    width: 332px;
+    width: $artistActualWidth;
     transition: .2s all;
 }
 
 .mini-play {
-    width: 448px;
+    width: $miniPlayWidth;
 
     ion-card {
         ion-card-content {
@@ -120,7 +126,7 @@ ion-list {
 }
 
 .songs-list {
-    width: calc(100% - 140px - 332px - 448px);
+    //width: calc(100% - 140px - 332px - $miniPlayWidth);
     transition: .2s all;
 
     .media-not-found {
@@ -141,6 +147,6 @@ ion-list {
 }
 
 .songs-list.actual {
-    width: calc(100% - 140px - 140px - 448px);
+    //width: calc(100% - 140px - 140px - $miniPlayWidth);
     transition: .2s all;
 }
