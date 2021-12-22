@@ -100,6 +100,9 @@ export class ListPage implements OnInit {
     if (this.usbDevicesService.isDetectChangeDevicesActive) {
       return false;
     }
+    if (this.playMediaService.isPlaying()) {
+      return false;
+    }
 
     if (event.code === this.configService.lastConfig.buttonUp) {
       // Up
