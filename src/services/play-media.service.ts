@@ -27,12 +27,9 @@ export class PlayMediaService {
     });
 
     await this.modalPlay.present();
-
-    const { data } = await this.modalPlay.onWillDismiss();
+    await this.modalPlay.onWillDismiss();
     
-    if (data.reason === 'complete') {
-      this.modalPlay = undefined;
-    }
+    this.modalPlay = undefined;
   }
 
   isPlaying() {
