@@ -1,4 +1,5 @@
 import { ipcMain } from "electron";
+import { Genre } from "../models/genre";
 import { Media } from './../models/media';
 
 export class MediaEvents {
@@ -22,7 +23,20 @@ export class MediaEvents {
                 where.genreId = filters.genreId;
             }
 
-            const result = await Media.findAll({ where, raw: true });
+            const result = await Media.findAll({
+                where,
+                raw: true,
+                include: [
+                    {
+                        model: Genre,
+                        as: 'genre',
+                        required: false,
+                        where: {
+
+                        }
+                    }
+                ]
+            });
 
             event.reply('getting-media', result);
         });
