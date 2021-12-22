@@ -103,6 +103,7 @@ export class UsbDetectEvents {
         media = await Media.create({
             name: usbFile.name,
             artistId: artist ? artist.get('id') : null,
+            genreId: genre ? genre.get('id') : null,
             mediaExt: path.extname(usbFile.path),
             durationInSeconds: usbFile.durationInSeconds ? Number(usbFile.durationInSeconds) : 0,
         });
