@@ -73,7 +73,7 @@
                 <ion-icon name="play" slot="start"></ion-icon>
                 <ion-label>
                   <h2>{{ item.name }}</h2>
-                  <p>Duración: 02:42 minutos</p>
+                  <p>Duración: {{ AppUtils.secondsToMinutes(item.durationInSeconds) }} minutos</p>
                 </ion-label>
               </ion-item>
             </ion-list>

@@ -122,4 +122,11 @@ export class AppUtils {
     return result
   }
 
+  /**
+   * Seconds to minutes
+   */
+  public static secondsToMinutes(seconds: number) {
+    return Math.round(seconds / 60).toString() + ':' + Math.round(seconds % 60).toString();
+  }
+
 }

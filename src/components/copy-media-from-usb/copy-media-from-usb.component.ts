@@ -1,6 +1,7 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { AfterContentInit, Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
+import { AppUtils } from 'src/app/app.utils';
 import { SharedDataService } from 'src/services/shared-data.service';
 import { UsbDevicesService, UsbFile } from 'src/services/usb-devices.service';
 
@@ -20,6 +21,8 @@ export class CopyMediaFromUsbComponent implements OnInit {
   filesData: UsbFile[] = [];
 
   completeAlert: HTMLIonAlertElement;
+
+  AppUtils = AppUtils;
 
   constructor(private usbDevicesService: UsbDevicesService, private alertController: AlertController, private modalController: ModalController, private sharedDataService: SharedDataService) { }
 
@@ -132,10 +135,6 @@ export class CopyMediaFromUsbComponent implements OnInit {
     } else {
       return null;
     }
-  }
-
-  toMinutes(seconds: number) {
-    return Math.round(seconds / 60).toString() + ':' + Math.round(seconds % 60).toString();
   }
 
 }

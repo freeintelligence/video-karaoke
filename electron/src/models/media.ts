@@ -54,4 +54,8 @@ Media.init({
         allowNull: true,
         defaultValue: null,
     },
+    durationInSeconds: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    }
 }, { sequelize: Database, modelName: 'media' });

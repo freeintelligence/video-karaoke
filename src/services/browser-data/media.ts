@@ -9,5 +9,6 @@ export default Array.from(Array(5000)).map((val, index) => {
         artistId,
         artistName: artistId ? 'Artista #' + artistId : null,
         mediaUrl: '/assets/videos/media-test.mp4',
+        durationInSeconds: Math.floor(Math.random() * (300 - 60 + 1) + 60),
     });
 });

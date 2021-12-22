@@ -1,6 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Component, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { IonItem } from '@ionic/angular';
+import { AppUtils } from 'src/app/app.utils';
 import { ArtistModel } from 'src/models/artist.service';
 import { GenreModel } from 'src/models/genre.service';
 import { MediaModel } from 'src/models/media.service';
@@ -38,6 +38,8 @@ export class ListPage implements OnInit {
   @ViewChild('virtualScrollArtist') virtualScrollArtist: CdkVirtualScrollViewport;
   @ViewChild('virtualScrollMedia') virtualScrollMedia: CdkVirtualScrollViewport;
 
+  AppUtils = AppUtils;
+  
   constructor(private playMediaService: PlayMediaService, private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService, private usbDevicesService: UsbDevicesService) {}
 
   ngOnInit() {
