@@ -9,7 +9,9 @@ export const run = async () => {
   Artist.belongsTo(Genre, { foreignKey: { field: 'genreId', allowNull: true, defaultValue: null }, as: 'genre' });
   Artist.hasMany(Media, { as: 'medias' });
   Media.belongsTo(Artist, { foreignKey: { field: 'artistId', allowNull: true, defaultValue: null }, as: 'artist' });
+  Genre.hasMany(Media, { as: 'medias' });
+  Media.belongsTo(Genre, { foreignKey: { field: 'genreId', allowNull: true, defaultValue: null }, as: 'genre' });
 
   //
-  await Database.sync({ /*force: true*/ });
+  await Database.sync({ force: true });
 }
