@@ -1,3 +1,5 @@
-<p>
-  play-media works!
-</p>
+<div class="video-container">
+  <video height="100%" autoplay #video>
+    <source [src]="media.getMediaUrl()" type="video/mp4">
+  </video>
+</div>

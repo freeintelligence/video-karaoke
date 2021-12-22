@@ -24,6 +24,7 @@ export class PlayMediaService {
       keyboardClose: false,
       showBackdrop: true,
       componentProps: { media },
+      cssClass: 'modal-fullscreen'
     });
 
     await this.modalPlay.present();
