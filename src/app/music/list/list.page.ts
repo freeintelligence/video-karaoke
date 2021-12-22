@@ -8,6 +8,7 @@ import { ArtistService } from 'src/services/artist.service';
 import { ConfigService } from 'src/services/config.service';
 import { GenreService } from 'src/services/genre.service';
 import { MediaService } from 'src/services/media.service';
+import { PlayMediaService } from 'src/services/play-media.service';
 import { UsbDevicesService } from 'src/services/usb-devices.service';
 
 interface typeTabs {
@@ -37,7 +38,7 @@ export class ListPage implements OnInit {
   @ViewChild('virtualScrollArtist') virtualScrollArtist: CdkVirtualScrollViewport;
   @ViewChild('virtualScrollMedia') virtualScrollMedia: CdkVirtualScrollViewport;
 
-  constructor(private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService, private usbDevicesService: UsbDevicesService) {}
+  constructor(private playMediaService: PlayMediaService, private mediaService: MediaService, public configService: ConfigService, private genreService: GenreService, private artistService: ArtistService, private usbDevicesService: UsbDevicesService) {}
 
   ngOnInit() {
     this.run();
@@ -165,7 +166,13 @@ export class ListPage implements OnInit {
         this.setTab('genre');
       }
     } else if (event.code === this.configService.lastConfig.buttonEnter) {
-      
+      const currentMedia = this.getCurrentMedia();
+
+      if (!currentMedia) {
+        return false;
+      }
+
+      this.playMediaService.play(currentMedia);
     }
   }
 

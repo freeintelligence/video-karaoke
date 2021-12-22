@@ -8,5 +8,6 @@ export default Array.from(Array(5000)).map((val, index) => {
         name: 'Canción #' + index,
         artistId,
         artistName: artistId ? 'Artista #' + artistId : null,
+        mediaUrl: '/assets/videos/media-test.mp4',
     });
 });
