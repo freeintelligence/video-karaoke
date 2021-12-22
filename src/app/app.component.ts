@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import { DisableScrollKeysService } from 'src/services/disable-scroll-keys.service';
 import { KeyCombinationService } from 'src/services/key-combination.service';
 import { KeyboardNavigationService } from 'src/services/keyboard-navigation.service';
@@ -11,7 +12,7 @@ import { UsbDevicesService } from 'src/services/usb-devices.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private disableScrollKeys: DisableScrollKeysService, private usbDevicesService: UsbDevicesService, private keyCombinationService: KeyCombinationService, private keyboardNavigationService: KeyboardNavigationService) {}
+  constructor(private toastController: ToastController, private disableScrollKeys: DisableScrollKeysService, private usbDevicesService: UsbDevicesService, private keyCombinationService: KeyCombinationService, private keyboardNavigationService: KeyboardNavigationService) {}
 
   ngOnInit() {
     this.usbDevicesService.onDetectChangeDevices();
@@ -23,6 +24,26 @@ export class AppComponent implements OnInit {
     this.keyCombinationService.handleKeyboardEvent(event);
     this.disableScrollKeys.handleKeyboardEvent(event);
     this.keyboardNavigationService.handleKeyboardEvent(event);
+
+    this.temporalKeyScreen(event);
+  }
+
+  async temporalKeyScreen(event: KeyboardEvent) {
+    if (event.type !== 'keydown') {
+      return false;
+    }
+
+    const toast = await this.toastController.create({
+      message: event.code,
+      animated: true,
+      color: 'primary',
+      duration: 2000,
+      position: 'bottom',
+    });
+
+    toast.present();
+
+    return true;
   }
 
 }
