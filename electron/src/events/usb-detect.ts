@@ -163,7 +163,7 @@ export class UsbDetectEvents {
     async isValidFile(usbFile: UsbFile) {
         const extname = path.extname(usbFile.path);
 
-        if (!extname || !(extname.toLowerCase() === '.mp4' || extname.toLowerCase() === '.ogg' || extname.toLowerCase() === '.webm')) {
+        if (!extname || !(extname.toLowerCase() === '.mp4')) {
             return false;
         }
 
