@@ -11,6 +11,7 @@ export class MediaModel {
   id: number;
   name: string;
   imageExt?: string;
+  artistName?: string;
   artistId?: number;
 
   constructor(private electron: ElectronService) {}
