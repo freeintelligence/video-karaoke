@@ -1,7 +1,7 @@
 import { startMonitoring, on, Device } from 'usb-detection';
 import * as drivelist from 'drivelist';
 import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
-import { getAllFiles } from 'get-all-files';
+import { getAllFiles, getAllFilesSync } from 'get-all-files';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import { getVideoDurationInSeconds } from 'get-video-duration-electron';
@@ -142,56 +142,76 @@ export class UsbDetectEvents {
         for (let i in filteredDevices) {
             for (let o in filteredDevices[i].mountpoints) {
                 const mountpoint = filteredDevices[i].mountpoints[o];
-                const genrePath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.genres);
-                const artistPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.artists);
+                const genresPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.genres);
+                const artistsPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.artists);
                 const mountFiles = fs.readdirSync(mountpoint.path).map(e => path.join(mountpoint.path, e));
-                const genreFiles = fs.existsSync(genrePath) && fs.lstatSync(genrePath).isDirectory() ? fs.readdirSync(genrePath).map(e => path.join(genrePath, e)) : [];
-                const artistFiles = fs.existsSync(artistPath) && fs.lstatSync(artistPath).isDirectory() ? fs.readdirSync(artistPath).map(e => path.join(artistPath, e)) : [];
+                const genresFiles = fs.existsSync(genresPath) && fs.lstatSync(genresPath).isDirectory() ? fs.readdirSync(genresPath).map(e => path.join(genresPath, e)) : [];
+                const artistsFiles = fs.existsSync(artistsPath) && fs.lstatSync(artistsPath).isDirectory() ? fs.readdirSync(artistsPath).map(e => path.join(artistsPath, e)) : [];
 
                 // "D:/*"
-                for (const file of [...mountFiles, ...genreFiles, ...artistFiles]) {
-                    const fileType = this.getUsbFileType(file);
+                for (const mountFile of [...mountFiles, ...genresFiles, ...artistsFiles]) {
+                    const fileType = this.getUsbFileType(mountFile);
 
-                    if (!fs.lstatSync(file).isFile() || !fileType) {
+                    if (!fs.lstatSync(mountFile).isFile() || !fileType) {
                         continue;
                     }
 
                     files.push(<UsbFile>{
-                        name: path.basename(file, path.extname(file)),
+                        name: path.basename(mountFile, path.extname(mountFile)),
                         mountpoint: mountpoint.path,
-                        path: file,
-                        durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(file) : null,
+                        path: mountFile,
+                        durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(mountFile) : null,
                         type: fileType,
                         additional: {}
                     });
                 }
 
                 // "D:/genres/*"
-                for (const dir of genreFiles.filter(e => fs.lstatSync(e).isDirectory())) {
-                    const genreName = path.basename(dir);
-                    const dirFiles = fs.readdirSync(dir).map(e => path.join(dir, e));
-                    console.log('genreName', genreName);
-                    console.log('dirFiles', dirFiles);
+                for (const genresFile of genresFiles.filter(e => fs.lstatSync(e).isDirectory())) {
+                    const genreName = path.basename(genresFile);
+                    const genreFiles = fs.readdirSync(genresFile).map(e => path.join(genresFile, e));
 
                     // "D:/genres/*/*"
-                    for (const file of dirFiles) {
-                        if (fs.lstatSync(file).isFile()) {
-                            const fileType = this.getUsbFileType(file);
+                    for (const genreFile of genreFiles) {
+                        if (fs.lstatSync(genreFile).isFile()) {
+                            const fileType = this.getUsbFileType(genreFile);
 
                             files.push(<UsbFile>{
-                                name: path.basename(file, path.extname(file)),
+                                name: path.basename(genreFile, path.extname(genreFile)),
                                 mountpoint: mountpoint.path,
-                                path: file,
-                                durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(file) : null,
+                                path: genreFile,
+                                durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(genreFile) : null,
                                 type: fileType,
                                 genreName,
                                 additional: {},
                             });
-                        } else if (fs.lstatSync(file).isDirectory()) {
+                        } else if (fs.lstatSync(genreFile).isDirectory()) {
+                            const artistName = path.basename(genreFile);
+                            const genreArtistFiles = getAllFilesSync(genreFile).toArray();
 
+                            // "D:/genres/*/*/*"
+                            for (const genreArtistFile of genreArtistFiles) {
+                                const fileType = this.getUsbFileType(genreArtistFile);
+
+                                if (!fs.lstatSync(genreArtistFile).isFile() || !fileType) {
+                                    continue;
+                                }
+            
+                                files.push(<UsbFile>{
+                                    name: path.basename(genreArtistFile, path.extname(genreArtistFile)),
+                                    mountpoint: mountpoint.path,
+                                    path: genreArtistFile,
+                                    durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(genreArtistFile) : null,
+                                    type: fileType,
+                                    genreName,
+                                    artistName,
+                                    additional: {},
+                                });
+                            }
                         }
                     }
                 }
+
                 console.log('files', files);
                 //const containerPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.base);
                 //const containerFiles = await getAllFiles(containerPath).toArray();
