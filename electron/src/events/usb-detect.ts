@@ -148,6 +148,7 @@ export class UsbDetectEvents {
                 const genreFiles = fs.existsSync(genrePath) && fs.lstatSync(genrePath).isDirectory() ? fs.readdirSync(genrePath).map(e => path.join(genrePath, e)) : [];
                 const artistFiles = fs.existsSync(artistPath) && fs.lstatSync(artistPath).isDirectory() ? fs.readdirSync(artistPath).map(e => path.join(artistPath, e)) : [];
 
+                // "D:/*"
                 for (const file of [...mountFiles, ...genreFiles, ...artistFiles]) {
                     const fileType = this.getUsbFileType(file);
 
@@ -164,6 +165,34 @@ export class UsbDetectEvents {
                         additional: {}
                     });
                 }
+
+                // "D:/genres/*"
+                for (const dir of genreFiles.filter(e => fs.lstatSync(e).isDirectory())) {
+                    const genreName = path.basename(dir);
+                    const dirFiles = fs.readdirSync(dir).map(e => path.join(dir, e));
+                    console.log('genreName', genreName);
+                    console.log('dirFiles', dirFiles);
+
+                    // "D:/genres/*/*"
+                    for (const file of dirFiles) {
+                        if (fs.lstatSync(file).isFile()) {
+                            const fileType = this.getUsbFileType(file);
+
+                            files.push(<UsbFile>{
+                                name: path.basename(file, path.extname(file)),
+                                mountpoint: mountpoint.path,
+                                path: file,
+                                durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(file) : null,
+                                type: fileType,
+                                genreName,
+                                additional: {},
+                            });
+                        } else if (fs.lstatSync(file).isDirectory()) {
+
+                        }
+                    }
+                }
+                console.log('files', files);
                 //const containerPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.base);
                 //const containerFiles = await getAllFiles(containerPath).toArray();
 
@@ -244,5 +273,5 @@ export class UsbDetectEvents {
 
 const v = new UsbDetectEvents();
 v.getUsbFiles().then(e => {
-    console.log('usb files', e);
+    //console.log('usb files', e);
 })
