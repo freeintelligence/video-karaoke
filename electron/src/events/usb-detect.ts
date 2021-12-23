@@ -12,19 +12,22 @@ import { Media } from './../models/media';
 export interface UsbFile {
     name: string;
     mountpoint: string;
-    genreName?: string;
-    artistName?: string;
     path: string;
-    durationInSeconds?: number;
+    genreName: string | null;
+    genreImagePath: string | null;
+    artistName: string | null;
+    artistImagePath: string | null;
+    durationInSeconds: number;
+    type: 'video'|'image';
     additional: any;
 }
 
 export class UsbDetectEvents {
 
-    static DIRECTORIES = { base: 'video-karaoke', genres: 'genres', artists: 'artists' };
+    static DIRECTORIES = { genres: 'genres', artists: 'artists' };
 
     constructor() {
-        this.run();
+        //this.run();
     }
 
     async run() {
@@ -139,9 +142,31 @@ export class UsbDetectEvents {
         for (let i in filteredDevices) {
             for (let o in filteredDevices[i].mountpoints) {
                 const mountpoint = filteredDevices[i].mountpoints[o];
-                const containerPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.base);
-                const containerFiles = await getAllFiles(containerPath).toArray();
-                
+                const containerFiles = fs.readdirSync(mountpoint.path).map(e => path.join(mountpoint.path, e));
+                const genreFiles = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.genres);
+                const artistFiles = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.artists);
+
+                for (let i in containerFiles) {
+                    const file = containerFiles[i];
+                    const fileType = this.getUsbFileType(file);
+
+                    if (!fs.lstatSync(file).isFile() || !fileType) {
+                        continue;
+                    }
+
+                    files.push(<UsbFile>{
+                        name: path.basename(file, path.extname(file)),
+                        mountpoint: mountpoint.path,
+                        path: file,
+                        durationInSeconds: await getVideoDurationInSeconds(file),
+                        type: this.getUsbFileType(fileType),
+                        additional: {}
+                    });
+                }
+                //const containerPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.base);
+                //const containerFiles = await getAllFiles(containerPath).toArray();
+
+                /*
                 for (let u in containerFiles) {
                     let data: UsbFile = {
                         name: path.basename(containerFiles[u]),
@@ -156,10 +181,32 @@ export class UsbDetectEvents {
 
                     files.push(data);
                 }
+                */
             }
         }
 
         return files;
+    }
+
+    getUsbFileType(file: string): UsbFile['type'] {
+        const extname = path.extname(file);
+
+        // No extension
+        if (!extname) {
+            return null;
+        }
+
+        // Video extension
+        if (['.mp4'].indexOf(extname) !== -1) {
+            return 'video';
+        }
+
+        // Image extension
+        if (['.jpg', '.jpeg', '.png'].indexOf(extname) !== -1) {
+            return 'image';
+        }
+
+        return null;
     }
 
     async isValidFile(usbFile: UsbFile) {
@@ -193,3 +240,8 @@ export class UsbDetectEvents {
     }
 
 }
+
+const v = new UsbDetectEvents();
+v.getUsbFiles().then(e => {
+    console.log('usb files', e);
+})

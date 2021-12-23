@@ -1,6 +1,8 @@
 import { app } from "electron";
 import * as path from 'path';
 import * as fs from 'fs-extra';
+import isElectron from 'is-electron';
+import * as os from 'os';
 
 export class Config {
 
@@ -18,7 +20,7 @@ export class Config {
   }
 
   databasePath(p: string = '') {
-    return path.join(app.getPath('userData'), 'database', p);
+    return path.join(isElectron() ? app.getPath('userData') : path.join(os.homedir(), 'video-karaoke'), 'database', p);
   }
 
   mediaPath(p: string = '') {
