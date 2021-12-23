@@ -255,7 +255,8 @@ export function setupContentSecurityPolicy(customScheme: string): void {
         'Content-Security-Policy': [
           electronIsDev
             ? `default-src ${customScheme}://* 'unsafe-inline' devtools://* 'unsafe-eval' data: media-src *;`
-            : `default-src ${customScheme}://* 'unsafe-inline' data: media-src *;`,
+            //: `default-src ${customScheme}://* 'unsafe-inline' data: media-src *;`,
+            : `default-src ${customScheme}://* 'unsafe-inline' devtools://* 'unsafe-eval' data: media-src *;`
         ],
       },
     });
