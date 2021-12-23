@@ -142,12 +142,13 @@ export class UsbDetectEvents {
         for (let i in filteredDevices) {
             for (let o in filteredDevices[i].mountpoints) {
                 const mountpoint = filteredDevices[i].mountpoints[o];
-                const containerFiles = fs.readdirSync(mountpoint.path).map(e => path.join(mountpoint.path, e));
-                const genreFiles = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.genres);
-                const artistFiles = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.artists);
+                const genrePath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.genres);
+                const artistPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.artists);
+                const mountFiles = fs.readdirSync(mountpoint.path).map(e => path.join(mountpoint.path, e));
+                const genreFiles = fs.existsSync(genrePath) && fs.lstatSync(genrePath).isDirectory() ? fs.readdirSync(genrePath).map(e => path.join(genrePath, e)) : [];
+                const artistFiles = fs.existsSync(artistPath) && fs.lstatSync(artistPath).isDirectory() ? fs.readdirSync(artistPath).map(e => path.join(artistPath, e)) : [];
 
-                for (let i in containerFiles) {
-                    const file = containerFiles[i];
+                for (const file of [...mountFiles, ...genreFiles, ...artistFiles]) {
                     const fileType = this.getUsbFileType(file);
 
                     if (!fs.lstatSync(file).isFile() || !fileType) {
@@ -158,8 +159,8 @@ export class UsbDetectEvents {
                         name: path.basename(file, path.extname(file)),
                         mountpoint: mountpoint.path,
                         path: file,
-                        durationInSeconds: await getVideoDurationInSeconds(file),
-                        type: this.getUsbFileType(fileType),
+                        durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(file) : null,
+                        type: fileType,
                         additional: {}
                     });
                 }
