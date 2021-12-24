@@ -20,7 +20,7 @@ export class Config {
   }
 
   databasePath(p: string = '') {
-    return path.join(isElectron() ? app.getPath('userData') : path.join(os.homedir(), 'video-karaoke'), 'database', p);
+    return path.join(isElectron() ? app.getPath('userData') : path.join(os.homedir(), 'Desktop', 'video-karaoke'), 'database', p);
   }
 
   mediaPath(p: string = '') {
@@ -50,3 +50,5 @@ export class Config {
 }
 
 export const config = new Config();
+
+console.log('databasePath', config.databasePath());

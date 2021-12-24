@@ -14,9 +14,7 @@ export interface UsbFile {
     mountpoint: string;
     path: string;
     genreName: string | null;
-    genreImagePath: string | null;
     artistName: string | null;
-    artistImagePath: string | null;
     durationInSeconds: number;
     type: 'video'|'image';
     additional: any;
@@ -270,5 +268,8 @@ export class UsbDetectEvents {
 
 const v = new UsbDetectEvents();
 v.getUsbFiles().then(e => {
-    console.log('usb files', e);
+    e.forEach(file => {
+
+    })
+    //console.log('usb files', e);
 })
