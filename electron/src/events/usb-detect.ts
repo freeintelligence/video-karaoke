@@ -166,6 +166,31 @@ export class UsbDetectEvents {
                     });
                 }
 
+                // "D:/artists/*"
+                for (const artistsFile of artistsFiles.filter(e => fs.lstatSync(e).isDirectory())) {
+                    const artistName = path.basename(artistsFile);
+                    const artistFiles = getAllFilesSync(artistsFile).toArray();
+
+                    // "D:/artists/*/*"
+                    for (const artistFile of artistFiles) {
+                        const fileType = this.getUsbFileType(artistFile);
+
+                        if (!fs.lstatSync(artistFile).isFile() || !fileType) {
+                            continue;
+                        }
+    
+                        files.push(<UsbFile>{
+                            name: path.basename(artistFile, path.extname(artistFile)),
+                            mountpoint: mountpoint.path,
+                            path: artistFile,
+                            durationInSeconds: fileType === 'video' ? await getVideoDurationInSeconds(artistFile) : null,
+                            type: fileType,
+                            artistName,
+                            additional: {},
+                        });
+                    }
+                }
+
                 // "D:/genres/*"
                 for (const genresFile of genresFiles.filter(e => fs.lstatSync(e).isDirectory())) {
                     const genreName = path.basename(genresFile);
@@ -211,27 +236,6 @@ export class UsbDetectEvents {
                         }
                     }
                 }
-
-                console.log('files', files);
-                //const containerPath = path.join(mountpoint.path, UsbDetectEvents.DIRECTORIES.base);
-                //const containerFiles = await getAllFiles(containerPath).toArray();
-
-                /*
-                for (let u in containerFiles) {
-                    let data: UsbFile = {
-                        name: path.basename(containerFiles[u]),
-                        mountpoint: mountpoint.path,
-                        path: containerFiles[u],
-                        additional: {},
-                    };
-
-                    if (!await this.isValidFile(data)) {
-                        continue;
-                    }
-
-                    files.push(data);
-                }
-                */
             }
         }
 
@@ -259,39 +263,9 @@ export class UsbDetectEvents {
         return null;
     }
 
-    async isValidFile(usbFile: UsbFile) {
-        const extname = path.extname(usbFile.path);
-
-        if (!extname || !(extname.toLowerCase() === '.mp4')) {
-            return false;
-        }
-
-        const pathArr = usbFile.path.replace(usbFile.mountpoint, '').split(path.sep).filter(e => e.length);
-        const pathIndex = pathArr.findIndex(e => e === usbFile.name);
-
-        usbFile.durationInSeconds = await getVideoDurationInSeconds(usbFile.path);
-        usbFile.name = usbFile.name.replace(extname, '');
-
-        // Genre detector
-        if (pathArr.length >= 4 && pathArr.indexOf(UsbDetectEvents.DIRECTORIES.genres) !== -1) {
-            usbFile.genreName = pathArr.length === 5 ? pathArr[pathIndex-2] : pathArr[pathIndex-1];
-        }
-
-        // Artist detector
-        if (pathArr.length >= 4) {
-            if (pathArr.indexOf(UsbDetectEvents.DIRECTORIES.artists) !== -1) {
-                usbFile.artistName = pathArr[pathIndex-1];
-            } else if (pathArr.indexOf(UsbDetectEvents.DIRECTORIES.genres) !== -1) {
-                usbFile.artistName = pathArr.length >= 5 ? pathArr[pathIndex-1] : null;
-            }
-        }
-
-        return true;
-    }
-
 }
 
 const v = new UsbDetectEvents();
 v.getUsbFiles().then(e => {
-    //console.log('usb files', e);
+    console.log('usb files', e);
 })
