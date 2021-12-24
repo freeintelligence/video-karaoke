@@ -243,12 +243,15 @@ export class UsbDetectEvents {
     }
 
     getUsbFileType(file: string): UsbFile['type'] {
-        const extname = path.extname(file);
+        let extname = path.extname(file);
 
         // No extension
         if (!extname) {
             return null;
         }
+
+        // To lowercase
+        extname = extname.toLowerCase();
 
         // Video extension
         if (['.mp4'].indexOf(extname) !== -1) {
