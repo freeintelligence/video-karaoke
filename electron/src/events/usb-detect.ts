@@ -299,23 +299,3 @@ export class UsbDetectEvents {
     }
 
 }
-
-import { run } from '../models/relationships';
-import { config } from '../config';
-
-run().then(async (e) => {
-    console.log('inicio!');
-
-    const v = new UsbDetectEvents();
-    const files = await v.getUsbFiles();
-
-    for (let file of files) {
-        try {
-            await v.copyUsbFile(file);
-            console.info('success', file.path);
-        } catch (err) {
-            console.error('error', file.path, err.message);
-        }
-    }
-        //console.log('usb files', e);
-})
