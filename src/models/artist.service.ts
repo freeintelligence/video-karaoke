@@ -15,7 +15,7 @@ export class ArtistModel {
   constructor(private electron: ElectronService) {}
 
   get imageUrl(): string {
-    return this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/artist-images/${this.id}.${this.imageExt}` : '/assets/images/no-image.png';
+    return this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/artist-images/${this.id}${this.imageExt}` : '/assets/images/no-image.png';
   }
 
   new() {
