@@ -37,17 +37,17 @@ export class UsbDetectEvents {
         await this.onCopyUsbFile();
     }
 
-    async onChange() {
-        /*
-        on('add', async (device: Device) => {
-            while (true) {
-                await Utils.waitMs(1000);
-            }
-        });
-        on('remove', async (device: Device) => {
+    async getDrivelist(removable: boolean = null) {
+        const devices = await drivelist.list();
 
-        });
-        */
+        if (removable === null) {
+            return devices;
+        }
+
+        return devices.filter(e => e.isRemovable === removable);
+    }
+
+    async onChange() {
         on('change', async (device: Device) => {
             try {
                 await (() => new Promise<void>(resolve => setTimeout(() => resolve(), 3000)))();
