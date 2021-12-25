@@ -29,9 +29,10 @@
             <ion-label>
               <h2>{{ item.name }}</h2>
               <p *ngIf="item.additional.status !== 'error'">
-                <ion-icon name="musical-notes"></ion-icon> {{ item.genreName ? item.genreName : 'Género desconocido' }}
-                <ion-icon name="accessibility"></ion-icon> {{ item.artistName ? item.artistName : 'Artista desconocido' }}
-                <ion-icon name="time"></ion-icon> {{ AppUtils.secondsToMinutes(item.durationInSeconds) }}
+                <ion-icon name="musical-notes"></ion-icon> {{ item.genreName ? item.genreName : 'Desconocido' }}
+                <ion-icon name="accessibility"></ion-icon> {{ item.artistName ? item.artistName : 'Desconocido' }}
+                <ion-icon name="highlight" *ngIf="item.type"></ion-icon> {{ item.type === 'video' ? 'Vídeo' : 'Imagen' }}
+                <ion-icon name="time" *ngIf="item.durationInSeconds"></ion-icon> {{ AppUtils.secondsToMinutes(item.durationInSeconds) }}
               </p>
               <p *ngIf="item.additional.status === 'error'"><ion-icon name="warning-outline"></ion-icon> {{ item.additional.errorText }}</p>
             </ion-label>
