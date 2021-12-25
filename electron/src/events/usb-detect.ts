@@ -9,6 +9,7 @@ import { Genre } from './../models/genre';
 import { Artist } from './../models/artist';
 import { Media } from './../models/media';
 import { config } from '../config';
+import { Utils } from '../utils';
 
 export interface UsbFile {
     name: string;
@@ -26,7 +27,7 @@ export class UsbDetectEvents {
     static DIRECTORIES = { genres: 'genres', artists: 'artists' };
 
     constructor() {
-        //this.run();
+        this.run();
     }
 
     async run() {
@@ -37,6 +38,16 @@ export class UsbDetectEvents {
     }
 
     async onChange() {
+        /*
+        on('add', async (device: Device) => {
+            while (true) {
+                await Utils.waitMs(1000);
+            }
+        });
+        on('remove', async (device: Device) => {
+
+        });
+        */
         on('change', async (device: Device) => {
             try {
                 await (() => new Promise<void>(resolve => setTimeout(() => resolve(), 3000)))();

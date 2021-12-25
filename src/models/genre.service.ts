@@ -12,11 +12,10 @@ export class GenreModel {
   name: string;
   imageExt?: string;
 
-  // Extra properties
-  imageUrl: string;
+  constructor(private electron: ElectronService) {}
 
-  constructor(private electron: ElectronService) {
-    this.imageUrl = this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/genre-images/${this.id}.${this.imageExt}` : '/assets/images/no-image.png';
+  get imageUrl(): string {
+    return this.imageExt ? `http://localhost:${AppConfig.httpServer.port}/images/genre-images/${this.id}.${this.imageExt}` : '/assets/images/no-image.png';
   }
 
   new() {

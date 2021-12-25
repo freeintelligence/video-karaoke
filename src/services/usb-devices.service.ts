@@ -11,10 +11,11 @@ import { SharedDataService } from './shared-data.service';
 export interface UsbFile {
   name: string;
   mountpoint: string;
-  genreName?: string;
-  artistName?: string;
   path: string;
+  genreName: string | null;
+  artistName: string | null;
   durationInSeconds: number;
+  type: 'video'|'image';
   additional: any;
 }
 

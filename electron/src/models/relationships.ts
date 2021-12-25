@@ -13,5 +13,5 @@ export const run = async () => {
   Media.belongsTo(Genre, { foreignKey: { field: 'genreId', allowNull: true, defaultValue: null }, as: 'genre' });
 
   //
-  await Database.sync({ force: true });
+  await Database.sync({ /*force: true*/ });
 }
