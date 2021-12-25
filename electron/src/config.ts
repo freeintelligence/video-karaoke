@@ -1,8 +1,8 @@
 import { app } from "electron";
 import * as path from 'path';
 import * as fs from 'fs-extra';
-import isElectron from 'is-electron';
 import * as os from 'os';
+import { isElectron } from "./external/is-electron.package";
 
 export class Config {
 
