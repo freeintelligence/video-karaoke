@@ -8,6 +8,7 @@ import { getVideoDurationInSeconds } from 'get-video-duration-electron';
 import { Genre } from './../models/genre';
 import { Artist } from './../models/artist';
 import { Media } from './../models/media';
+import { config } from '../config';
 
 export interface UsbFile {
     name: string;
