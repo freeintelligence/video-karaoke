@@ -110,7 +110,14 @@ export class UsbDetectEvents {
                     }
                 } else if (!artist && genre) {
                     // Image for genre
-                    
+                    try {
+                        const extname = path.extname(usbFile.path);
+                        await fs.copyFile(usbFile.path, config.genreImagesPath(`${genre.get('id')}${extname}`));
+                        genre.set('imageExt', extname);
+                        genre.save();
+                    } catch (err) {
+                        throw new Error('Error desconocido');
+                    }
                 } else {
                     // Invalid image (don't have artist or genre)
                     throw new Error('Imagen sin género o artista')
