@@ -50,5 +50,3 @@ export class Config {
 }
 
 export const config = new Config();
-
-console.log('databasePath', config.databasePath());

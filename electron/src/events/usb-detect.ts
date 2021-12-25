@@ -95,29 +95,55 @@ export class UsbDetectEvents {
             artist = artistData;
         }
 
-        // Find media (if exists)
-        if (await this.mediaAlreadyExists(usbFile, genre, artist)) {
-            throw new Error('Ya existe');
-        }
-
-        // Create media
-        media = await Media.create({
-            name: usbFile.name,
-            artistId: artist ? artist.get('id') : null,
-            genreId: genre ? genre.get('id') : null,
-            mediaExt: path.extname(usbFile.path),
-            durationInSeconds: usbFile.durationInSeconds ? Number(usbFile.durationInSeconds) : 0,
-        });
-
-        // Try copy file
-        try {
-            await fs.copyFile(usbFile.path, media.getMediaPath());
-            await media.createGif();
-        } catch (err) {
-            if (media && media.get('id')) {
-                await media.destroy();
+        // File
+        switch (usbFile.type) {
+            case 'image': {
+                if (artist) {
+                    // Image for artist
+                    try {
+                        const extname = path.extname(usbFile.path);
+                        await fs.copyFile(usbFile.path, config.artistImagesPath(`${artist.get('id')}${extname}`));
+                        artist.set('imageExt', extname);
+                        artist.save();
+                    } catch (err) {
+                        throw new Error('Error desconocido');
+                    }
+                } else if (!artist && genre) {
+                    // Image for genre
+                    
+                } else {
+                    // Invalid image (don't have artist or genre)
+                    throw new Error('Imagen sin género o artista')
+                }
+                break;
             }
-            throw new Error('Error desconocido');
+            case 'video': {
+                // Find media (if exists)
+                if (await this.mediaAlreadyExists(usbFile, genre, artist)) {
+                    throw new Error('Ya existe');
+                }
+
+                // Create media
+                media = await Media.create({
+                    name: usbFile.name,
+                    artistId: artist ? artist.get('id') : null,
+                    genreId: genre ? genre.get('id') : null,
+                    mediaExt: path.extname(usbFile.path),
+                    durationInSeconds: usbFile.durationInSeconds ? Number(usbFile.durationInSeconds) : 0,
+                });
+
+                // Try copy file
+                try {
+                    await fs.copyFile(usbFile.path, media.getMediaPath());
+                    await media.createGif();
+                } catch (err) {
+                    if (media && media.get('id')) {
+                        await media.destroy();
+                    }
+                    throw new Error('Error desconocido');
+                }
+                break;
+            }
         }
     }
 
@@ -126,6 +152,7 @@ export class UsbDetectEvents {
             where: {
                 name: usbFile.name,
                 artistId: artist ? artist.get('id') : null,
+                genreId: genre ? genre.get('id') : null,
             }
         });
 
@@ -266,10 +293,22 @@ export class UsbDetectEvents {
 
 }
 
-const v = new UsbDetectEvents();
-v.getUsbFiles().then(e => {
-    e.forEach(file => {
+import { run } from '../models/relationships';
+import { config } from '../config';
 
-    })
-    //console.log('usb files', e);
+run().then(async (e) => {
+    console.log('inicio!');
+
+    const v = new UsbDetectEvents();
+    const files = await v.getUsbFiles();
+
+    for (let file of files) {
+        try {
+            await v.copyUsbFile(file);
+            console.info('success', file.path);
+        } catch (err) {
+            console.error('error', file.path, err.message);
+        }
+    }
+        //console.log('usb files', e);
 })
