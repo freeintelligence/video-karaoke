@@ -1,7 +1,6 @@
-import { startMonitoring, on, Device } from 'usb-detection';
 import * as drivelist from 'drivelist';
 import { BrowserWindow, ipcMain, IpcMainEvent } from 'electron';
-import { getAllFiles, getAllFilesSync } from 'get-all-files';
+import { getAllFilesSync } from 'get-all-files';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import { getVideoDurationInSeconds } from 'get-video-duration-electron';
@@ -9,7 +8,7 @@ import { Genre } from './../models/genre';
 import { Artist } from './../models/artist';
 import { Media } from './../models/media';
 import { config } from '../config';
-import { Utils } from '../utils';
+import { DriveEvents } from '../external/drive-events';
 
 export interface UsbFile {
     name: string;
@@ -26,36 +25,22 @@ export class UsbDetectEvents {
 
     static DIRECTORIES = { genres: 'genres', artists: 'artists' };
 
+    driveEvents: DriveEvents = new DriveEvents();
+
     constructor() {
         this.run();
     }
 
     async run() {
-        startMonitoring();
         await this.onChange();
         await this.onGetUsbFiles();
         await this.onCopyUsbFile();
     }
 
-    async getDrivelist(removable: boolean = null) {
-        const devices = await drivelist.list();
-
-        if (removable === null) {
-            return devices;
-        }
-
-        return devices.filter(e => e.isRemovable === removable);
-    }
-
     async onChange() {
-        on('change', async (device: Device) => {
-            try {
-                await (() => new Promise<void>(resolve => setTimeout(() => resolve(), 3000)))();
-                const devices = await drivelist.list();
-                BrowserWindow.getFocusedWindow().webContents.send('change-detected-devices', devices);
-            } catch (err) {
-                BrowserWindow.getFocusedWindow().webContents.send('change-detected-devices', []);
-            }
+        this.driveEvents.onChange.subscribe(drivers => {
+            console.log('drivers', drivers)
+            BrowserWindow.getFocusedWindow().webContents.send('change-detected-devices', drivers)
         });
     }
 
