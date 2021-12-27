@@ -40,9 +40,7 @@ export class DriveEvents {
         if (drivers.length < newDrivers.length) {
           this.onAdd.next(newDrivers);
           break;
-        }
-
-        if (waiting >= DriveEvents.DRIVE_DETECT_SETTINGS.maxWaitMs) {
+        } else if (waiting >= DriveEvents.DRIVE_DETECT_SETTINGS.maxWaitMs) {
           break;
         }
       }
